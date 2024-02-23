@@ -42,4 +42,10 @@ public class Person {
     public List<File> getFiles() {
         return files;
     }
+
+    @Override
+    public String toString() {
+        return  pesel + " "+firstName +" "+ lastName +" "+ nationality ;
+
+    }
 }

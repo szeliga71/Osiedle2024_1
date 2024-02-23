@@ -39,6 +39,7 @@ public class Environment {
     public Environment() {
 
         estate = new HashMap<>();
+        personsSet=new HashSet<>();
         roomSet = new HashSet<>();
         items = new HashSet<>();
 
@@ -58,9 +59,11 @@ public class Environment {
         Apartment ap3 = new Apartment(123);
         Garage pp1 = new Garage(30);
         Garage pp2 = new Garage(35);
-        //Citi_Car sm1 = new Citi_Car(6, "Suzuki", "Swift", Fuel.BENZIN, 1000, true, "White");
-        //Off_Road_Car st1 = new Off_Road_Car(28, "Toyota", "RAV4", Fuel.DIESEL, 2500, 16);
-        //Amfibia am1 = new Amfibia(15, "UNIMAG", "AM!", Fuel.ELECTICITI, 150, true, true);
+
+        Citi_Car sm1 = new Citi_Car(6, "Suzuki", "Swift", Fuel.BENZIN, 1000, true, "White");
+        Off_Road_Car st1 = new Off_Road_Car(28, "Toyota", "RAV4", Fuel.DIESEL, 2500, 16);
+        Amfibia am1 = new Amfibia(15, "UNIMAG", "AM!", Fuel.ELECTICITI, 150, true, true);
+
         Thing t1 = new Thing("grabie", 1);
         Thing t2 = new Thing("lopata", 2);
         Thing t3 = new Thing("kosiarka", 2);
@@ -71,9 +74,9 @@ public class Environment {
         items.add(t3);
         items.add(t4);
 
-        //items.add(sm1);
-        //items.add(st1);
-        //items.add(am1);
+        items.add(sm1);
+        items.add(st1);
+        items.add(am1);
 
 
         // tu automat ladowanie z pliku
@@ -96,6 +99,9 @@ public class Environment {
 //===============================================================    
 
     public void run() {
+
+        Person user=null;
+        List<Person>temporaryPersonList=new ArrayList<>();
 
         while (true) {
 
@@ -126,7 +132,11 @@ public class Environment {
 
             switch(number){
 
-                case "1"  ->{System.out.println("1");}
+                case "1"  ->{System.out.println("1");
+                    System.out.println(allPersons(personsSet,temporaryPersonList));
+
+                //user=getPerson()
+                    }
                 case "2"  ->{System.out.println("2");}
                 case "3"  ->{System.out.println("3");}
                 case "4"  ->{System.out.println("4");}
