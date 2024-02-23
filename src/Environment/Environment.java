@@ -5,6 +5,12 @@ import EstateObjects.Apartment;
 import EstateObjects.Garage;
 import EstateObjects.Room;
 import Items.Item;
+import Items.Thing.Thing;
+import Items.Veihcle.Amfibia;
+import Items.Veihcle.Citi_Car;
+import Items.Veihcle.Fuel;
+import Items.Veihcle.Off_Road_Car;
+import People.Nation;
 import People.Person;
 
 
@@ -16,6 +22,8 @@ public class Environment {
 
     Set<Person>personsSet;
     Set<Room> roomSet;
+    
+    Set<Item>items;
 
     //List<Person> personsList;
     //List<Room>roomsList;
@@ -28,13 +36,64 @@ public class Environment {
     Apartment apartment;
     Garage garage;
 
-    public Environment(){
+    public Environment() {
 
-        estate=new HashMap<>();
-        roomSet=new HashSet<>();
+        estate = new HashMap<>();
+        roomSet = new HashSet<>();
+        items = new HashSet<>();
+
+
+//===============================================================
+
+
+        // dane do pracy
+        Person p1 = new Person("43","Jan", "Kowalski", Nation.POLISH);
+        Person p2 = new Person("45","Bronislaw", "Cieslak",Nation.FRENCH);
+        Person p3 = new Person("44","Kamil", "Nowak", Nation.DEUTSCH);
+
+
+        Apartment ap = new Apartment(120);
+        Apartment ap1 = new Apartment(159);
+        Apartment ap2 = new Apartment(220);
+        Apartment ap3 = new Apartment(123);
+        Garage pp1 = new Garage(30);
+        Garage pp2 = new Garage(35);
+        //Citi_Car sm1 = new Citi_Car(6, "Suzuki", "Swift", Fuel.BENZIN, 1000, true, "White");
+        //Off_Road_Car st1 = new Off_Road_Car(28, "Toyota", "RAV4", Fuel.DIESEL, 2500, 16);
+        //Amfibia am1 = new Amfibia(15, "UNIMAG", "AM!", Fuel.ELECTICITI, 150, true, true);
+        Thing t1 = new Thing("grabie", 1);
+        Thing t2 = new Thing("lopata", 2);
+        Thing t3 = new Thing("kosiarka", 2);
+        Thing t4 = new Thing("betoniarka", 4);
+
+        items.add(t1);
+        items.add(t2);
+        items.add(t3);
+        items.add(t4);
+
+        //items.add(sm1);
+        //items.add(st1);
+        //items.add(am1);
+
+
+        // tu automat ladowanie z pliku
+
+
+        personsSet.add(p1);
+        personsSet.add(p2);
+        personsSet.add(p3);
+
+
+        estate.put(ap.getId(), null);
+        estate.put(ap1.getId(), null);
+        estate.put(ap2.getId(), null);
+        estate.put(pp1.getId(), null);
+        estate.put(pp2.getId(), null);
+        estate.put(ap3.getId(), null);
+
     }
 
-
+//===============================================================    
 
     public void run() {
 
@@ -163,11 +222,11 @@ public class Environment {
         }
     }*/
 
-    public Person getPerson(String id,Set<Person>persons){
+    public Person getPerson(String pesel,Set<Person>persons){
 
         Person user=null;
         for(Person p:persons){
-            if(id.equals(p.getPesel())){
+            if(pesel.equals(p.getPesel())){
                 user=p;
             }
         }
