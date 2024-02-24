@@ -21,4 +21,13 @@ public class Off_Road_Car extends Veihcle implements Terrain{
     public void drive() {
         System.out.println(" drive forward !");
     }
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

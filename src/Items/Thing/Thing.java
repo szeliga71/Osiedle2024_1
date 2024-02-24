@@ -15,4 +15,14 @@ public class Thing extends Item {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -23,4 +23,13 @@ public class Citi_Car extends Veihcle{
     public void setColor(String color) {
         this.color = color;
     }
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

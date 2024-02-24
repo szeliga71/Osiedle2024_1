@@ -48,4 +48,26 @@ public class Person {
         return  "PESEL : "+pesel + "  , imie    "+firstName +", nazwisko    "+ lastName +", narodowosc    "+ nationality+".";
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+
+        if (!getPesel().equals(person.getPesel())) return false;
+        if (!getFirstName().equals(person.getFirstName())) return false;
+        if (!getLastName().equals(person.getLastName())) return false;
+        return getNationality() == person.getNationality();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPesel().hashCode();
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + getLastName().hashCode();
+        result = 31 * result + getNationality().hashCode();
+        return result;
+    }
 }

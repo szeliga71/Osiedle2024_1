@@ -65,4 +65,22 @@ public abstract class Room {
                 "  endRent " + Arrays.toString(endRent) +
                 "  primaryTenant " + primaryTenant;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room)) return false;
+
+        Room room = (Room) o;
+
+        if (getArea() != room.getArea()) return false;
+        return getId().equals(room.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + (int) (getArea() ^ (getArea() >>> 32));
+        return result;
+    }
 }

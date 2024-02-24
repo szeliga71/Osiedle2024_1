@@ -38,4 +38,14 @@ public class Amfibia extends Veihcle implements Terrain,Water{
         System.out.println(" sail boldly into the wind");
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

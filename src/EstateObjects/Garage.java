@@ -22,4 +22,14 @@ public class Garage extends Room{
     public String toString() {
         return "Garage " + super.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
