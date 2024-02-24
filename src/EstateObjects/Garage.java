@@ -17,4 +17,9 @@ public class Garage extends Room{
     public Set<Item> getItemsInGarage() {
         return itemsInGarage;
     }
+
+    @Override
+    public String toString() {
+        return " Garage " + super.toString();
+    }
 }

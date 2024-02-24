@@ -18,4 +18,9 @@ public class Apartment extends Room{
     public Set<Person> getPersonsInApartment() {
         return personsInApartment;
     }
+
+    @Override
+    public String toString() {
+        return "Apartment "+super.toString();
+    }
 }

@@ -3,6 +3,7 @@ package EstateObjects;
 import People.Person;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.UUID;
 
 public abstract class Room {
@@ -56,7 +57,12 @@ public abstract class Room {
     }
 
 
-
-
-
+    @Override
+    public String toString() {
+        return " nr "+ id +
+                "  area " + area +
+                "  startRent " + Arrays.toString(startRent) +
+                "  endRent " + Arrays.toString(endRent) +
+                "  primaryTenant " + primaryTenant;
+    }
 }
