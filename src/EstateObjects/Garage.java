@@ -20,6 +20,6 @@ public class Garage extends Room{
 
     @Override
     public String toString() {
-        return " Garage " + super.toString();
+        return "Garage " + super.toString();
     }
 }
