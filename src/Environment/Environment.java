@@ -111,12 +111,18 @@ public class Environment {
 
     public void run() {
 
+
+
         Person user=null;
 
 
 
-
         while (true) {
+
+
+            Apartment apartmentTemp=null;
+            Garage garageTemp=null;
+            Item itemTemp=null;
 
             System.out.println();
             System.out.println(" Wybierz odpowiednia cyfre " + '\n');
@@ -150,8 +156,8 @@ public class Environment {
             switch(number){
 
                 case "1"  -> {
-                    user = choosePerson();
-                    if (user == null) {
+                    user = choosePerson(personsSet);
+                    if (user==null) {
                         System.out.println(" INFO : osoba o padanym peselu nie istnieje,badz podales nieprawidlowy numer, sprobuj jeszcze raz !");
                     } else {
                         System.out.print(" W chwili obecnej uzytkownikiem jest osoba  ");
@@ -191,6 +197,8 @@ public class Environment {
                 case "18" ->{
                     System.out.println(" KONIEC PROGRAMU ");
                     System.exit(125);}
+                case "q" ->{System.exit(126);}
+                case "Q" ->{System.exit(127);}
 
                 default -> {
                     System.out.println(" wrong number ");
@@ -244,16 +252,16 @@ public class Environment {
 
     // 4. pokaz wszystkie WOLNE mieszkania i garaze
     public List<Room>freeAllRooms(Map<UUID,String>estate,Set<Room>roomSet){
-        List<Room>all=new ArrayList<>();
+        List<Room>allRooms=new ArrayList<>();
         for(Map.Entry<UUID,String>entry : estate.entrySet()) {
             if(entry.getValue()==null){
                 for(Room r:roomSet){
                     if(r.getId().equals(entry.getKey())){
-                    all.add(r);}
+                    allRooms.add(r);}
                 }
             }
         }
-        return all;
+        return allRooms;
     }
 
     // 4. pokaz wszystkie mieszkania i garaze
@@ -275,36 +283,38 @@ public class Environment {
 
     // pokaz wszystkie garaze lub mieszkania
     public <T extends Room>List<T> allRooms(Set<Room>rooms,Class<T>propertyClass){
-        List<T>all=new ArrayList<>();
+        List<T>room=new ArrayList<>();
         for(Room r:rooms){
             //if(r instanceof propertyClass){
             if(propertyClass.isInstance(r)) {
-                all.add((T) r);
+                room.add((T) r);
             }
         }
-        return all;
+        return room;
     }
 
     // 5. pokaz wszystkich person
 
     public List<Person> allPersons(Set<Person>persons){
-        List<Person>personsList=new ArrayList<>();
-        personsList.addAll(persons);
-        return personsList;
+        //List<Person>personsList=new ArrayList<>(persons);
+        //personsList.addAll(persons);
+        //return personsList;
+        return new ArrayList<>(persons);
     }
 
     // 6. pokaz przedmioty w garazu
 
-    public List<Item> allItems(Garage garage,List<Item>items){
-        items.addAll(garage.getItemsInGarage());
-    return items;
+    public List<Item> allItems(Garage garage){
+        //items.addAll(garage.getItemsInGarage());
+    return new ArrayList<>(garage.getItemsInGarage());
     }
 
     // 7. pokaz zameldowanych w mieszkaniu
 
     public List<Person> personsInApartment(Apartment apartment,List<Person>personsInApart){
-        personsInApart.addAll(apartment.getPersonsInApartment());
-        return personsInApart;
+        //personsInApart.addAll(apartment.getPersonsInApartment());
+        //return personsInApart;
+        return new ArrayList<>(apartment.getPersonsInApartment());
     }
 
     // 8. wybierz wolny apartament  !!!!   UWAGA NIEDOKONCZONE !!!!
@@ -343,7 +353,7 @@ public class Environment {
 
     // 12. wybor osoby
 
-    public Person choosePerson() {
+    public Person choosePerson(Set<Person> personsSet) {
 
         System.out.println(" Prosze podac pesel osoby ktora chcesz wybrac  : " + '\n');
         show(allPersons(personsSet));
