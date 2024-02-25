@@ -32,4 +32,13 @@ public class Citi_Car extends Veihcle{
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+
+        return "Citi_Car{" +super.toString()+
+                "park_asistant=" + park_asistant +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }

@@ -40,5 +40,11 @@ public abstract class Item {
         result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
         return result;
     }
+
+    @Override
+    public String toString() {
+        return  ""+ size;
+
+    }
 }
 

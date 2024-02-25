@@ -15,8 +15,11 @@ public class Apartment extends Room{
         personsInApartment=new HashSet<>();
     }
 
-    public Set<Person> getPersonsInApartment() {
-        return personsInApartment;
+    public void addPersonToApartment(Person person) {
+        personsInApartment.add(person);
+    }
+    public void removePersonFromApartment(Person person){
+        personsInApartment.remove(person);
     }
 
     @Override
@@ -32,5 +35,9 @@ public class Apartment extends Room{
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public Set<Person> getPersonsInApartment() {
+        return personsInApartment;
     }
 }

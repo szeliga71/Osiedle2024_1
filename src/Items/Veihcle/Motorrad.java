@@ -25,4 +25,11 @@ public class Motorrad extends Veihcle{
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Motorrad{" +super.toString()+
+                "enduro=" + enduro +
+                '}';
+    }
 }

@@ -25,4 +25,11 @@ public class Thing extends Item {
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return
+                name +" "+ super.toString();
+
+    }
 }

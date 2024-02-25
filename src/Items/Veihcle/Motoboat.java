@@ -35,4 +35,12 @@ public class Motoboat extends Item implements Water{
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Motoboat{" +super.toString()+
+                "longest=" + longest +
+                ", fuel=" + fuel +
+                '}';
+    }
 }

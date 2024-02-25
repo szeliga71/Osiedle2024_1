@@ -18,6 +18,16 @@ public class Garage extends Room{
         return itemsInGarage;
     }
 
+    public void addItemsToGarage(Item item){
+        itemsInGarage.add(item);
+    }
+    public void removeItemFromGarage(Item item){
+        itemsInGarage.remove(item);
+    }
+    public void clearGarage(){
+        itemsInGarage.clear();
+    }
+
     @Override
     public String toString() {
         return "Garage " + super.toString();

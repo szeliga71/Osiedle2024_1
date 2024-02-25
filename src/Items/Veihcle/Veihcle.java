@@ -33,4 +33,14 @@ public abstract class Veihcle extends Item {
     public int getEngine_Capacity() {
         return engine_Capacity;
     }
+
+    @Override
+    public String toString() {
+        return "Veihcle{" +
+                "marke='" + marke + '\'' +
+                ", model='" + model + '\'' +
+                ", fuel=" + fuel +
+                ", engine_Capacity=" + engine_Capacity +
+                '}';
+    }
 }

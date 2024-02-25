@@ -30,4 +30,11 @@ public class Off_Road_Car extends Veihcle implements Terrain{
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Off_Road_Car{" +super.toString()+
+                "how_many_halogens=" + how_many_halogens +
+                '}';
+    }
 }

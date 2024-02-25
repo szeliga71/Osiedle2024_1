@@ -48,4 +48,9 @@ public class Amfibia extends Veihcle implements Terrain,Water{
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Amfibia{}"+super.toString();
+    }
 }
