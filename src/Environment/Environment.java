@@ -14,24 +14,25 @@ import People.Nation;
 import People.Person;
 
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Environment {
 
     // try 2 ways !!!
 
-    Set<Person>personsSet;
+    Set<Person> personsSet;
     Set<Room> roomSet;
-    
-    Set<Item>items;
+
+    Set<Item> items;
 
     //List<Person> personsList;
     //List<Room>roomsList;
 
-    Map<UUID,String> estate;
+    Map<UUID, String> estate;
     //Map<Room,Person> estateFull;
 
-    Scanner scan=new Scanner(System.in);
+    Scanner scan = new Scanner(System.in);
     Person User;
     Apartment apartment;
     Garage garage;
@@ -39,7 +40,7 @@ public class Environment {
     public Environment() {
 
         estate = new HashMap<>();
-        personsSet=new HashSet<>();
+        personsSet = new HashSet<>();
         roomSet = new HashSet<>();
         items = new HashSet<>();
 
@@ -48,9 +49,9 @@ public class Environment {
 
 
         // dane do pracy
-        Person p1 = new Person("43","Jan", "Kowalski", Nation.POLISH);
-        Person p2 = new Person("45","Bronislaw", "Cieslak",Nation.FRENCH);
-        Person p3 = new Person("44","Kamil", "Nowak", Nation.DEUTSCH);
+        Person p1 = new Person("43", "Jan", "Kowalski", Nation.POLISH);
+        Person p2 = new Person("45", "Bronislaw", "Cieslak", Nation.FRENCH);
+        Person p3 = new Person("44", "Kamil", "Nowak", Nation.DEUTSCH);
 
 
         Apartment ap = new Apartment(120);
@@ -94,15 +95,12 @@ public class Environment {
         roomSet.add(ap3);
 
 
-
         estate.put(ap.getId(), null);
         estate.put(ap1.getId(), null);
         estate.put(ap2.getId(), null);
         estate.put(pp1.getId(), null);
         estate.put(pp2.getId(), null);
         estate.put(ap3.getId(), null);
-
-
 
 
     }
@@ -112,52 +110,53 @@ public class Environment {
     public void run() {
 
 
-
-        Person user=null;
-
+        Person user = null;
 
 
         while (true) {
 
 
-            Apartment apartmentTemp=null;
-            Garage garageTemp=null;
-            Item itemTemp=null;
-
-            System.out.println();
-            System.out.println(" Wybierz odpowiednia cyfre " + '\n');
-            System.out.println("  1.  Pokaz wszystkie osoby / Zaloguj sie ");
-            System.out.println("  2.  Pokaz wszystkie wolne mieszkania i garaze");
-            System.out.println("  3.  Pokaz wszystkie mieszkania");
-            System.out.println("  4.  Pokaz wszystkie garaze");
-            System.out.println("  5.  Pokaz wolne mieszkania/ Wynajem mieszkania !");
-            System.out.println("  6.  Zwolnij mieszkanie");
-            System.out.println("  7.  Pokaz lokatorow w mieszkaniu");
-            System.out.println("  8.  Dodaj lokatora do mieszkania");
-            System.out.println("  9.  Usun lokatora z mieszkanaia ");
-            System.out.println("  10. Pokaz wolne garaze/ Wynajem garazu !");
-            System.out.println("  11. Zwolnij garaz");
-            System.out.println("  12. Pokaz wszystkie przedmioty w garazu");
-            System.out.println("  13. Dodaj przedmiot do garazu");
-            System.out.println("  14. Usun przedmiot z garazu");
-            System.out.println("  15. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
-            System.out.println("  16. Pokaz wszystkie przedmioty danej osoby");
-            System.out.println("  17. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
-            System.out.println("  18. EXIT");
+            Apartment apartmentTemp = null;
+            Garage garageTemp = null;
+            Item itemTemp = null;
 
             String number;
 
+            if (user == null) {
+                number = "1";
+            } else {
 
-            if(user==null){
-                number="1";
-            }else{
-            number =choose(scan);}
+                System.out.println();
+                System.out.println(" Wybierz odpowiednia cyfre " + '\n');
+                System.out.println("  1.  Pokaz wszystkie osoby / Zaloguj sie ");
+                System.out.println("  2.  Pokaz wszystkie wolne mieszkania i garaze");
+                System.out.println("  3.  Pokaz wszystkie mieszkania");
+                System.out.println("  4.  Pokaz wszystkie garaze");
+                System.out.println("  5.  Pokaz wolne mieszkania/ Wynajem mieszkania !");
+                System.out.println("  6.  Zwolnij mieszkanie");
+                System.out.println("  7.  Pokaz lokatorow w mieszkaniu");
+                System.out.println("  8.  Dodaj lokatora do mieszkania");
+                System.out.println("  9.  Usun lokatora z mieszkanaia ");
+                System.out.println("  10. Pokaz wolne garaze/ Wynajem garazu !");
+                System.out.println("  11. Zwolnij garaz");
+                System.out.println("  12. Pokaz wszystkie przedmioty w garazu");
+                System.out.println("  13. Dodaj przedmiot do garazu");
+                System.out.println("  14. Usun przedmiot z garazu");
+                System.out.println("  15. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
+                System.out.println("  16. Pokaz wszystkie przedmioty danej osoby");
+                System.out.println("  17. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
+                System.out.println("  18. EXIT");
 
-            switch(number){
+                number = choose(scan);
 
-                case "1"  -> {
+            }
+
+
+            switch (number) {
+
+                case "1" -> {
                     user = choosePerson(personsSet);
-                    if (user==null) {
+                    if (user == null) {
                         System.out.println(" INFO : osoba o padanym peselu nie istnieje,badz podales nieprawidlowy numer, sprobuj jeszcze raz !");
                     } else {
                         System.out.print(" W chwili obecnej uzytkownikiem jest osoba  ");
@@ -165,40 +164,78 @@ public class Environment {
                     }
                 }
 
-                case "2"  ->{
-                    show(freeAllRooms(estate,roomSet));
+                case "2" -> {
+                    //show(freeAllRooms(estate, roomSet));
+                    show(freeRoomsApartGar(estate,Room.class));
                 }
 
-                case "3"  ->{
+                case "3" -> {
 
-                    show(allRooms(roomSet,Apartment.class));
+                    //show(allRooms(roomSet, Apartment.class));
+                    show(freeRoomsApartGar(estate,Apartment.class));
                 }
 
-                case "4"  ->{
+                case "4" -> {
 
-                    show(allRooms(roomSet,Garage.class));
+                    //show(allRooms(roomSet, Garage.class));
+                    show(freeRoomsApartGar(estate,Garage.class));
                 }
 
-                case "5"  ->{System.out.println("5");
-                show(freeApartments(estate));}
-                case "6"  ->{System.out.println("6");}
-                case "7"  ->{System.out.println("7");}
-                case "8"  ->{System.out.println("8");}
-                case "9"  ->{System.out.println("9");}
-                case "10" ->{System.out.println("10");}
-                case "11" ->{System.out.println("11");}
-                case "12" ->{System.out.println("12");}
-                case "13" ->{System.out.println("13");}
-                case "14" ->{System.out.println("14");}
-                case "15" ->{System.out.println("15");}
-                case "16" ->{System.out.println("16");}
-                case "17" ->{System.out.println("17");}
+                case "5" -> {
 
-                case "18" ->{
+                    rentRoom(chooseRoom(Apartment.class),user);
+                   // rent(chooseApartment(), user);
+                }
+
+
+                case "6" -> {
+                    System.out.println("6");
+                }
+                case "7" -> {
+                    System.out.println("7");
+                }
+                case "8" -> {
+                    System.out.println("8");
+                }
+                case "9" -> {
+                    System.out.println("9");
+                }
+                case "10" -> {
+                    System.out.println("10");
+                    rentRoom(chooseRoom(Garage.class),user);
+                }
+                case "11" -> {
+                    System.out.println("11");
+                }
+                case "12" -> {
+                    System.out.println("12");
+                }
+                case "13" -> {
+                    System.out.println("13");
+                }
+                case "14" -> {
+                    System.out.println("14");
+                }
+                case "15" -> {
+                    System.out.println("15");
+                }
+                case "16" -> {
+                    System.out.println("16");
+                }
+                case "17" -> {
+                    System.out.println("17");
+                }
+
+                case "18" -> {
                     System.out.println(" KONIEC PROGRAMU ");
-                    System.exit(125);}
-                case "q" ->{System.exit(126);}
-                case "Q" ->{System.exit(127);}
+                    System.exit(125);
+                }
+                case "q" -> {
+                    System.exit(126);
+                }
+                case "Q" -> {
+                    System.exit(127);
+                }
 
                 default -> {
                     System.out.println(" wrong number ");
@@ -210,24 +247,23 @@ public class Environment {
     }
 
 
-
     // metods
 
     // 1.  wybierz numer do case
 
-    public String choose(Scanner scan){
+    public String choose(Scanner scan) {
 
         System.out.println(" wybierz odpowiedni numer !");
         return scan.nextLine();
     }
 
     // 2. pokaz wolne mieszkania
-    public List<Apartment>freeApartments(Map<UUID,String>estate){
-        List<Apartment>apartments=new ArrayList<>();
-        for(Map.Entry<UUID,String>entry : estate.entrySet()) {
-            if(entry.getValue()==null){
-                for(Room r:roomSet){
-                    if((r instanceof Apartment)&&(entry.getKey().equals(r.getId()))){
+    public List<Apartment> freeApartments(Map<UUID, String> estate) {
+        List<Apartment> apartments = new ArrayList<>();
+        for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+            if (entry.getValue() == null) {
+                for (Room r : roomSet) {
+                    if ((r instanceof Apartment) && (entry.getKey().equals(r.getId()))) {
                         apartments.add((Apartment) r);
                     }
                 }
@@ -235,13 +271,29 @@ public class Environment {
         }
         return apartments;
     }
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    public <T extends Room>List<T> freeRoomsApartGar(Map<UUID, String> estate,Class<T>propertyClass) {
+        List<T> apartments = new ArrayList<>();
+        for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+            if (entry.getValue() == null) {
+                for (Room r : roomSet) {
+                    if ((propertyClass.isInstance(r)) && (entry.getKey().equals(r.getId()))) {
+                        apartments.add((T)r);
+                    }
+                }
+            }
+        }
+        return apartments;
+    }
+
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
     // 3. pokaz wolne garaze
-    public List<Garage>freeGarage(Map<UUID,String>estate, List<Garage>garages){
-        for(Map.Entry<UUID,String>entry : estate.entrySet()) {
-            if(entry.getValue()==null){
-                for(Room r:roomSet){
-                    if((r instanceof Garage)&&(entry.getKey().equals(r.getId()))){
+    public List<Garage> freeGarage(Map<UUID, String> estate, List<Garage> garages) {
+        for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+            if (entry.getValue() == null) {
+                for (Room r : roomSet) {
+                    if ((r instanceof Garage) && (entry.getKey().equals(r.getId()))) {
                         garages.add((Garage) r);
                     }
                 }
@@ -251,13 +303,14 @@ public class Environment {
     }
 
     // 4. pokaz wszystkie WOLNE mieszkania i garaze
-    public List<Room>freeAllRooms(Map<UUID,String>estate,Set<Room>roomSet){
-        List<Room>allRooms=new ArrayList<>();
-        for(Map.Entry<UUID,String>entry : estate.entrySet()) {
-            if(entry.getValue()==null){
-                for(Room r:roomSet){
-                    if(r.getId().equals(entry.getKey())){
-                    allRooms.add(r);}
+    public List<Room> freeAllRooms(Map<UUID, String> estate, Set<Room> roomSet) {
+        List<Room> allRooms = new ArrayList<>();
+        for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+            if (entry.getValue() == null) {
+                for (Room r : roomSet) {
+                    if (r.getId().equals(entry.getKey())) {
+                        allRooms.add(r);
+                    }
                 }
             }
         }
@@ -265,7 +318,7 @@ public class Environment {
     }
 
     // 4. pokaz wszystkie mieszkania i garaze
-    public List<Room> allRooms(Set<Room>rooms,List<Room>roomList){
+    public List<Room> allRooms(Set<Room> rooms, List<Room> roomList) {
         roomList.addAll(rooms);
         return roomList;
     }
@@ -282,11 +335,11 @@ public class Environment {
     }*/
 
     // pokaz wszystkie garaze lub mieszkania
-    public <T extends Room>List<T> allRooms(Set<Room>rooms,Class<T>propertyClass){
-        List<T>room=new ArrayList<>();
-        for(Room r:rooms){
+    public <T extends Room> List<T> allRooms(Set<Room> rooms, Class<T> propertyClass) {
+        List<T> room = new ArrayList<>();
+        for (Room r : rooms) {
             //if(r instanceof propertyClass){
-            if(propertyClass.isInstance(r)) {
+            if (propertyClass.isInstance(r)) {
                 room.add((T) r);
             }
         }
@@ -295,7 +348,7 @@ public class Environment {
 
     // 5. pokaz wszystkich person
 
-    public List<Person> allPersons(Set<Person>persons){
+    public List<Person> allPersons(Set<Person> persons) {
         //List<Person>personsList=new ArrayList<>(persons);
         //personsList.addAll(persons);
         //return personsList;
@@ -304,14 +357,14 @@ public class Environment {
 
     // 6. pokaz przedmioty w garazu
 
-    public List<Item> allItems(Garage garage){
+    public List<Item> allItems(Garage garage) {
         //items.addAll(garage.getItemsInGarage());
-    return new ArrayList<>(garage.getItemsInGarage());
+        return new ArrayList<>(garage.getItemsInGarage());
     }
 
     // 7. pokaz zameldowanych w mieszkaniu
 
-    public List<Person> personsInApartment(Apartment apartment,List<Person>personsInApart){
+    public List<Person> personsInApartment(Apartment apartment, List<Person> personsInApart) {
         //personsInApart.addAll(apartment.getPersonsInApartment());
         //return personsInApart;
         return new ArrayList<>(apartment.getPersonsInApartment());
@@ -333,21 +386,22 @@ public class Environment {
     //9A. wybierz garaz usera w ktorym chcesz cos zrobic
 
     // 10. wybierz usera
-    public Person getPerson(String pesel,Set<Person>persons){
+    public Person getPerson(String pesel, Set<Person> persons) {
 
-        Person user=null;
-        for(Person p:persons){
-            if(pesel.equals(p.getPesel())){
-                user=p;
+        Person user = null;
+        for (Person p : persons) {
+            if (pesel.equals(p.getPesel())) {
+                user = p;
             }
         }
-    return user;}
+        return user;
+    }
 
-//11. pokaz wydrukuj ponumerowana liste
-    public <T> void show(List<T>list){
-        int i=1;
-        for(T item:list){
-            System.out.println( (i++)+". "+item);
+    //11. pokaz wydrukuj ponumerowana liste
+    public <T> void show(List<T> list) {
+        int i = 1;
+        for (T item : list) {
+            System.out.println((i++) + ". " + item);
         }
     }
 
@@ -362,9 +416,133 @@ public class Environment {
         return getPerson(pesel, personsSet);
     }
 
+    // 13. wybor apartamentu
+  /*  public Apartment chooseApartment() {
+
+        System.out.println(" Prosze podac numer pod ktorym znajduje sie apartment,ktory chcesz wybrac  : " + '\n');
+        show(freeApartments(estate));
+        System.out.println(" numer  :");
+        int position=-1;
+        try {
+            position = (Integer.parseInt(choose(scan)))-1;
+
+    } catch (NumberFormatException e) {
+            System.out.println(" wprowadzono nieprawidlowa liczbe , sprobuj ponownie !");
+        }
+
+        if ((position < 0) || (position > freeApartments(estate).size() - 1)) {
+            return null;
+        } else {
+            return freeApartments(estate).get(position);
+        }
+
+    }
+*/
+/*    public void rent(Apartment apartment, Person user) {
+
+        if (apartment != null) {
+            for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+                if (entry.getKey() == apartment.getId()) {
+
+                    System.out.println(" podaj ilosc dni wynajmu  :");
+                    long rentDays=-1;
+                    try {
+                        rentDays = Long.parseLong(choose(scan));
+                    } catch (NumberFormatException e) {
+                        System.out.println(" wprowadzono nieprawidlowa liczbe , powrot do glownego menu ... ");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ie) {
+                            ie.printStackTrace();
+                        }
+                    }
+
+                        if (rentDays <= 0) {
+                            System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
+                        } else {
+                            apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                            entry.setValue(user.getPesel());
+                            apartment.setPrimaryTenant(user);
+                            apartment.setStartRent(new LocalDate[]{LocalDate.now()});
+                            System.out.println();
+                            System.out.println(user + " wynaja  " + apartment);
+                        }
+
+                }
+            }
 
 
+        } else {
+            System.out.println(" prosze prawidlowo wybrac obiekt ! ");
+        }
 
 
+    }
 
+ */
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    public <T extends Room> T  chooseRoom(Class<T>propertyClass) {
+
+        System.out.println(" Prosze podac numer pod ktorym znajduje sie apartment,ktory chcesz wybrac  : " + '\n');
+        show(freeRoomsApartGar(estate, propertyClass));
+        {
+            System.out.println(" numer  :");
+            int position = -1;
+            try {
+                position = (Integer.parseInt(choose(scan)))-1;
+
+            } catch (NumberFormatException e) {
+                System.out.println(" wprowadzono nieprawidlowa liczbe , sprobuj ponownie !");
+            }
+
+            if ((position < 0) || (position > freeApartments(estate).size() - 1)) {
+                return null;
+            } else {
+                return freeRoomsApartGar(estate, propertyClass).get(position);
+            }
+
+        }
+    }
+
+    public <T extends Room> void rentRoom( T room , Person user) {
+
+        if (room != null) {
+            for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+                if (entry.getKey() == room.getId()) {
+
+                    System.out.println(" podaj ilosc dni wynajmu  :");
+                    long rentDays=-1;
+                    try {
+                        rentDays = Long.parseLong(choose(scan));
+                    } catch (NumberFormatException e) {
+                        System.out.println(" wprowadzono nieprawidlowa liczbe , powrot do glownego menu ... ");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ie) {
+                            ie.printStackTrace();
+                        }
+                    }
+
+                    if (rentDays <= 0) {
+                        System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
+                    } else {
+                        room.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                        entry.setValue(user.getPesel());
+                        room.setPrimaryTenant(user);
+                        room.setStartRent(new LocalDate[]{LocalDate.now()});
+                        System.out.println();
+                        System.out.println(user + " wynaja  " + room);
+                    }
+
+                }
+            }
+
+
+        } else {
+            System.out.println(" prosze prawidlowo wybrac obiekt ! ");
+        }
+
+
+    }
+    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 }
