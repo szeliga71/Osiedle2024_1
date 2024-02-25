@@ -183,7 +183,11 @@ public class Environment {
 
                 case "5" -> {
 
-                    rentRoom(chooseRoom(Apartment.class),user);
+                    if(fiveRoomRentLimitation(user)){
+                    rentRoom(chooseRoom(Apartment.class),user);}
+                    else {
+                        System.out.println(" user ma wynajetych 5 nieruchomosci ");
+                    }
                    // rent(chooseApartment(), user);
                 }
 
@@ -230,7 +234,11 @@ public class Environment {
                 }
                 case "10" -> {
 
+                    if(fiveRoomRentLimitation(user)){
                     rentRoom(chooseRoom(Garage.class),user);
+                }else{
+                        System.out.println(" user ma wynajetych 5 nieruchomosci ");
+                    }
                 }
                 case "11" -> {
                     System.out.println("11");
@@ -566,5 +574,16 @@ public class Environment {
         UUID id = allItems(items).get(index).getId();
 
         return getItem(id);
+    }
+    public boolean fiveRoomRentLimitation(Person user){
+
+        int count=0;
+
+        for(Map.Entry<UUID,String>entry:estate.entrySet()){
+
+            if(entry.getValue().equals(user.getPesel())){
+                ++count;}
+        }
+        return count < 5;
     }
 }
