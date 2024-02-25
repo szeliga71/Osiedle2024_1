@@ -8,10 +8,12 @@ import java.util.Set;
 public class Garage extends Room{
 
    private Set<Item> itemsInGarage;
+   private long volume;
 
     public Garage(long area){
         super.setArea(area);
         itemsInGarage=new HashSet<>();
+        volume=0;
     }
 
     public Set<Item> getItemsInGarage() {
@@ -19,7 +21,13 @@ public class Garage extends Room{
     }
 
     public void addItemsToGarage(Item item){
+        if(item.getSize()+volume<this.getArea()){
         itemsInGarage.add(item);
+        setVolume(item.getSize()+volume);}
+        else{
+            System.out.println(" nie ma wystarczajaco miejsca w garazu ");
+        }
+
     }
     public void removeItemFromGarage(Item item){
         itemsInGarage.remove(item);
@@ -42,4 +50,13 @@ public class Garage extends Room{
     public int hashCode() {
         return super.hashCode();
     }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(long volume) {
+        this.volume = volume;
+    }
+
 }
