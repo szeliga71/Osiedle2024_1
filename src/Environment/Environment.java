@@ -23,6 +23,7 @@ public class Environment {
 
     // try 2 ways !!!
 
+    TimeInApp timeInApp;
     Set<Person> personsSet;
     Set<Room> roomSet;
 
@@ -44,6 +45,8 @@ public class Environment {
         roomSet = new HashSet<>();
         items = new HashSet<>();
 
+
+        timeInApp=new TimeInApp(this);
 
 //===============================================================
 
@@ -109,6 +112,8 @@ public class Environment {
 
     public void run() {
 
+
+        timeInApp.timeRun(this);
 
         Person user = null;
 
@@ -285,6 +290,7 @@ public class Environment {
 
                 case "18" -> {
                     System.out.println(" KONIEC PROGRAMU ");
+                    //timeInApp.timeRun(this) scheduledExecutorService.shutdown();
                     System.exit(125);
                 }
                 case "q" -> {
