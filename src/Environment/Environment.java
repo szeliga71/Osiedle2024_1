@@ -265,9 +265,11 @@ public class Environment {
                 }
                 case "15" -> {
                     System.out.println("15");
+                    show(roomsOfUser(Room.class,user));
                 }
                 case "16" -> {
                     System.out.println("16");
+
                 }
                 case "17" -> {
                     System.out.println("17");
@@ -581,7 +583,7 @@ public class Environment {
 
         for(Map.Entry<UUID,String>entry:estate.entrySet()){
 
-            if(entry.getValue().equals(user.getPesel())){
+            if(entry.getValue()==user.getPesel()){
                 ++count;}
         }
         return count < 5;
