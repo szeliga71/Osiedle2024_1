@@ -14,8 +14,10 @@ import People.Nation;
 import People.Person;
 
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Environment {
 
@@ -165,30 +167,31 @@ public class Environment {
                 }
 
                 case "2" -> {
-                    //show(freeAllRooms(estate, roomSet));
+
                     show(freeRoomsApartGar(Room.class));
                 }
 
                 case "3" -> {
 
                     show(allRooms(roomSet, Apartment.class));
-                    //show(freeRoomsApartGar(estate,Apartment.class));
+
                 }
 
                 case "4" -> {
 
                     show(allRooms(roomSet, Garage.class));
-                    //show(freeRoomsApartGar(estate,Garage.class));
+
                 }
 
                 case "5" -> {
 
-                    if(fiveRoomRentLimitation(user)){
-                    rentRoom(chooseRoom(Apartment.class),user);}
-                    else {
-                        System.out.println(" user ma wynajetych 5 nieruchomosci ");
-                    }
-                   // rent(chooseApartment(), user);
+                    //if(fiveRoomRentLimitation(user)){
+                    rentRoom(chooseRoom(Apartment.class),user);
+                //}
+                    //else {
+                      //  System.out.println(" user ma wynajetych 5 nieruchomosci ");
+                    //}
+
                 }
 
 
@@ -217,11 +220,12 @@ public class Environment {
                 }
                 }
                 case "9" -> {
-                    // PROBLEM  !!!!
+                    // PRzetestowac
                     System.out.println("9");
-                    Apartment apartment = (Apartment) chooseUserRoom(Apartment.class, user);
+                    Apartment apartment = chooseUserRoom(Apartment.class, user);
                     if (apartment == null) {
                         System.out.println(" nie mozna dokonac tej operacji !");
+                        break;
                     } else{
                         tempPerson = choosePerson(apartment.getPersonsInApartment());}
 
@@ -241,38 +245,42 @@ public class Environment {
                     }
                 }
                 case "11" -> {
-                    System.out.println("11");
+
                     unrentRoom(chooseUserRoom(Garage.class,user),user);
                 }
                 case "12" -> {
-                    System.out.println("12");
+
                     show(allItemsInGarage(chooseUserRoom(Garage.class,user)));
 
                 }
                 case "13" -> {
-                    System.out.println("13");
+
                     itemTemp=chooseItem(items);
                     System.out.println( "  item DO DODANIA "+ itemTemp);
                     Garage garage=chooseUserRoom(Garage.class,user);
                     garage.addItemsToGarage(itemTemp);
                 }
                 case "14" -> {
-                    System.out.println("14");
-                    Garage garage=(Garage)chooseUserRoom(Garage.class,user);
-                    //show(garage.getItemsInGarage().stream().toList());
+
+                    Garage garage=chooseUserRoom(Garage.class,user);
                     itemTemp=chooseItem(garage.getItemsInGarage());
-                    garage.removeItemFromGarage(itemTemp);
+                    garage.removeItemFromGarage(itemTemp,items);
                 }
                 case "15" -> {
-                    System.out.println("15");
+
                     show(roomsOfUser(Room.class,user));
                 }
                 case "16" -> {
-                    System.out.println("16");
 
+                    show(allItemsOfUser(user));
                 }
                 case "17" -> {
-                    System.out.println("17");
+                    System.out.println(" DANE UZYTKOWNIKA");
+                    System.out.println(user);
+                    System.out.println(" NIERUCHOMOSCI WYNAJMOWANE PRZEZ UZYTKOWNIKA");
+                    show(roomsOfUser(Room.class,user));
+                    System.out.println(" WSZYSTKIE PRZEDMIOTY UZYTKOWNIKA");
+                    show(allItemsOfUser(user));
                 }
 
                 case "18" -> {
@@ -306,7 +314,6 @@ public class Environment {
         List<T> rooms = new ArrayList<>();
         for (Map.Entry<UUID, String> entry : estate.entrySet()) {
             if(entry.getValue()==null){
-            //if (Objects.equals(entry.getValue(), user.getPesel())) {
                 for (Room r : roomSet) {
                     if ((propertyClass.isInstance(r)) && (entry.getKey().equals(r.getId()))) {
                         rooms.add((T)r);
@@ -447,63 +454,69 @@ public class Environment {
 
     public <T extends Room> void rentRoom( T room , Person user) {
 
-        if (room != null) {
-            for (Map.Entry<UUID, String> entry : estate.entrySet()) {
-                if (entry.getKey() == room.getId()) {
+        if(!fiveRoomRentLimitation(user)){
+            System.out.println(" uzytkownik ma juz na koncie 5 wynajetych obiektow !");
+        }else if(!threeFileLimitation(user)){
+            System.out.println(" uzytkownik ma juz trzy ostrzezenia na koncie i nie moze wynajac w tym momencie zadnego nowego obiektu !");
+        }else if (room != null) {
+                for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+                    if (entry.getKey() == room.getId()) {
 
-                    System.out.println(" podaj ilosc dni wynajmu  :");
-                    long rentDays = -1;
-                    try {
-                        rentDays = Long.parseLong(choose(scan));
-                    } catch (NumberFormatException e) {
-                        System.out.println(" wprowadzono nieprawidlowa liczbe , powrot do glownego menu ... ");
+                        System.out.println(" podaj ilosc dni wynajmu  :");
+                        long rentDays = -1;
                         try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException ie) {
-                            ie.printStackTrace();
-                        }
-                    }
-
-                    if (rentDays <= 0) {
-                        System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
-                    } else {
-                        if (room instanceof Apartment) {
-                            Apartment apartment = (Apartment) room;
-
-
-                            apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
-                            entry.setValue(user.getPesel());
-                            apartment.setPrimaryTenant(user);
-
-
-                            apartment.addPersonToApartment(user);
-
-                            apartment.setStartRent(new LocalDate[]{LocalDate.now()});
-                            System.out.println();
-                            System.out.println(user + " wynaja  " + room);
-                        }
-                        else if (room instanceof Garage) {
-                            Garage garage= (Garage) room;
-
-                            garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
-                            entry.setValue(user.getPesel());
-                            garage.setPrimaryTenant(user);
-                            garage.setStartRent(new LocalDate[]{LocalDate.now()});
-                            System.out.println();
-                            System.out.println(user + " wynaja  " + room);
+                            rentDays = Long.parseLong(choose(scan));
+                        } catch (NumberFormatException e) {
+                            System.out.println(" wprowadzono nieprawidlowa liczbe , powrot do glownego menu ... ");
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException ie) {
+                                ie.printStackTrace();
+                            }
                         }
 
+                        if (rentDays <= 0) {
+                            System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
+                        } else {
+                            if (room instanceof Apartment) {
+                                Apartment apartment = (Apartment) room;
+
+
+                                apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                                entry.setValue(user.getPesel());
+                                apartment.setPrimaryTenant(user);
+
+
+                                apartment.addPersonToApartment(user);
+
+                                apartment.setStartRent(new LocalDate[]{LocalDate.now()});
+                                System.out.println();
+                                System.out.println(user + " wynaja  " + room);
+                            } else if (room instanceof Garage) {
+                                Garage garage = (Garage) room;
+
+                                garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                                entry.setValue(user.getPesel());
+                                garage.setPrimaryTenant(user);
+                                garage.setStartRent(new LocalDate[]{LocalDate.now()});
+                                System.out.println();
+                                System.out.println(user + " wynaja  " + room);
+                            }
+
+                        }
                     }
                 }
+
+
+            } else {
+                System.out.println(" prosze prawidlowo wybrac obiekt ! ");
             }
 
-
-        } else {
-            System.out.println(" prosze prawidlowo wybrac obiekt ! ");
         }
 
 
-    }
+
+
 
     public <T extends Room> void unrentRoom( T room , Person user) {
 
@@ -524,7 +537,12 @@ public class Environment {
                     }
                     else if (room instanceof Garage) {
                         Garage garage = (Garage) room;
-                        garage.clearGarage();
+
+                        //items.addAll(new HashSet<>(garage.getItemsInGarage()));
+
+                        //clearGatage czysci garaz i zwraca do glownego setu itemy
+                        garage.clearGarage(items);
+
                         System.out.println();
                         System.out.println(user + " zwolnil  " + room);
                     }
@@ -575,6 +593,7 @@ public class Environment {
         int index=(Integer.parseInt(position))-1;
         UUID id = allItems(items).get(index).getId();
 
+
         return getItem(id);
     }
     public boolean fiveRoomRentLimitation(Person user){
@@ -588,4 +607,19 @@ public class Environment {
         }
         return count < 5;
     }
+
+    public boolean threeFileLimitation(Person user){
+        return user.getFiles().size()<3;
+    }
+
+    public List<Item> allItemsOfUser(Person user){
+
+        List<Garage>tempGarage= roomsOfUser(Garage.class, user).stream().toList();
+
+    return tempGarage.stream()
+            .map(Garage::getItemsInGarage)
+            .flatMap(Set::stream)
+            .collect(Collectors.toList());
+    }
 }
+

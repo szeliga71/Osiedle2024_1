@@ -29,10 +29,14 @@ public class Garage extends Room{
         }
 
     }
-    public void removeItemFromGarage(Item item){
+    public void removeItemFromGarage(Item item,Set<Item>items){
+
         itemsInGarage.remove(item);
+        items.add(item);
     }
-    public void clearGarage(){
+
+    public void clearGarage(Set<Item> items){
+        items.addAll(this.getItemsInGarage());
         itemsInGarage.clear();
     }
 
