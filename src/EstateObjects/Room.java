@@ -14,7 +14,8 @@ public abstract class Room {
     private long area;
     private LocalDate[] startRent;
     private LocalDate[] endRent;
-    private Person primaryTenant;
+    //private Person primaryTenant;
+    private String primaryTenantID;
 
     public Room(){
         id=UUID.randomUUID();
@@ -48,14 +49,21 @@ public abstract class Room {
         this.endRent = endRent;
     }
 
-    public Person getPrimaryTenant() {
+   /* public Person getPrimaryTenant() {
         return primaryTenant;
     }
 
     public void setPrimaryTenant(Person primaryTenant) {
         this.primaryTenant = primaryTenant;
+    }*/
+
+    public String getPrimaryTenantID() {
+        return primaryTenantID;
     }
 
+    public void setPrimaryTenantID(String primaryTenantID) {
+        this.primaryTenantID = primaryTenantID;
+    }
 
     @Override
     public String toString() {
@@ -63,7 +71,7 @@ public abstract class Room {
                 "  area " + area +
                 "  startRent " + Arrays.toString(startRent) +
                 "  endRent " + Arrays.toString(endRent) +
-                "  primaryTenant " + primaryTenant;
+                "  primaryTenant " + primaryTenantID;
     }
 
     @Override

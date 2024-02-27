@@ -45,7 +45,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "PESEL : "+pesel + "  , imie    "+firstName +", nazwisko    "+ lastName +", narodowosc    "+ nationality+".";
+        return  "PESEL : "+pesel + "  , imie    "+firstName +", nazwisko    "+ lastName +", narodowosc    "+ nationality+" "+ getFiles().size()+" "+getFiles()+".";
 
     }
 

@@ -14,14 +14,12 @@ import People.Nation;
 import People.Person;
 
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Environment {
 
-    // try 2 ways !!!
 
     TimeInApp timeInApp;
     Set<Person> personsSet;
@@ -29,13 +27,10 @@ public class Environment {
 
     Set<Item> items;
 
-    //List<Person> personsList;
-    //List<Room>roomsList;
-
     Map<UUID, String> estate;
-    //Map<Room,Person> estateFull;
 
-    Scanner scan = new Scanner(System.in);
+
+    Scanner scan;
 
 
     public Environment() {
@@ -45,6 +40,7 @@ public class Environment {
         roomSet = new HashSet<>();
         items = new HashSet<>();
 
+        scan=new Scanner(System.in);
 
         timeInApp=new TimeInApp(this);
 
@@ -152,7 +148,8 @@ public class Environment {
                 System.out.println("  15. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
                 System.out.println("  16. Pokaz wszystkie przedmioty danej osoby");
                 System.out.println("  17. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
-                System.out.println("  18. EXIT");
+                System.out.println("  18. Zapisz aktualny stan OSIEDLA do pliku ");
+                System.out.println("  19. EXIT");
 
                 number = choose(scan);
 
@@ -218,7 +215,7 @@ public class Environment {
                     Apartment apartment=chooseUserRoom(Apartment.class,user);
                     if(apartment==null){
                         System.out.println(" nie mozna dokonac tej operacji !");
-                    }else if(apartment.getPrimaryTenant().equals(tempPerson)){
+                    }else if(apartment.getPrimaryTenantID().equals(tempPerson.getPesel())){
                         System.out.println(" W tym momencie nie mozna usunac glownego lokatora-najemce !");
                     }else{
                     apartment.addPersonToApartment(tempPerson);
@@ -234,7 +231,7 @@ public class Environment {
                     } else{
                         tempPerson = choosePerson(apartment.getPersonsInApartment());}
 
-                        if ((tempPerson == null)||(apartment.getPrimaryTenant().equals(tempPerson))) {
+                        if ((tempPerson == null)||(apartment.getPrimaryTenantID().equals(tempPerson.getPesel()))) {
                             System.out.println(" nie ma zameldowanych innych osob poza glownym wynajmujacym badz podana osoba jest glownym najemca ! ");
                         } else {
 
@@ -288,17 +285,22 @@ public class Environment {
                     show(allItemsOfUser(user));
                 }
 
-                case "18" -> {
+                case "18" -> {}
+
+                case "19" -> {
                     System.out.println(" KONIEC PROGRAMU ");
                     //timeInApp.timeRun(this) scheduledExecutorService.shutdown();
                     System.exit(125);
                 }
+
+                //00000000000000000000000000000000000
                 case "q" -> {
                     System.exit(126);
                 }
                 case "Q" -> {
                     System.exit(127);
                 }
+                //000000000000000000000000000000000000
 
                 default -> {
                     System.out.println(" wrong number ");
@@ -489,13 +491,16 @@ public class Environment {
 
 
                                 apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+
+                                apartment.setEndRent(new LocalDate[]{timeInApp.getCurrentDate()[0].plusDays(rentDays)});
                                 entry.setValue(user.getPesel());
-                                apartment.setPrimaryTenant(user);
+                                apartment.setPrimaryTenantID(user.getPesel());
+
 
 
                                 apartment.addPersonToApartment(user);
 
-                                apartment.setStartRent(new LocalDate[]{LocalDate.now()});
+                                apartment.setStartRent(new LocalDate[]{timeInApp.getCurrentDate()[0]});
                                 System.out.println();
                                 System.out.println(user + " wynaja  " + room);
                             } else if (room instanceof Garage) {
@@ -503,7 +508,7 @@ public class Environment {
 
                                 garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
                                 entry.setValue(user.getPesel());
-                                garage.setPrimaryTenant(user);
+                                garage.setPrimaryTenantID(user.getPesel());
                                 garage.setStartRent(new LocalDate[]{LocalDate.now()});
                                 System.out.println();
                                 System.out.println(user + " wynaja  " + room);
@@ -532,7 +537,7 @@ public class Environment {
 
                     entry.setValue(null);
                     room.setEndRent(new LocalDate[]{null});
-                    room.setPrimaryTenant(null);
+                    room.setPrimaryTenantID(null);
                     room.setStartRent(new LocalDate[]{null});
 
                     if (room instanceof Apartment) {
@@ -627,5 +632,33 @@ public class Environment {
             .flatMap(Set::stream)
             .collect(Collectors.toList());
     }
+
+    // metoda boool  czy osoba wynajmuje mieszkanie  dopiero wtedy moze wynajac garaz !!!!
+
+    /*
+    Jeśli najem będzie chciała rozpocząć osoba z więcej niż trzema zadłużeniami (co najmniej 3
+            obiekty typu File) na przestrzeni najmów na tle całego osiedla, rzucony powinien zostać wyjątek
+    ProblematicTenantException z komunikatem – „Osoba X posiadała już najem pomieszczeń:
+    lista_pomieszczen”, gdzie X to imię i nazwisko danej osoby, zaś lista_pomieszczen definiuje wynajmowane pomieszczenia, które zostały wynajęte.
+    */
+
+    /*
+     W przypadku wkładania każdego przedmiotu lub pojazdu do pomieszczenia musimy się
+     upewnić, że pomieszczenie jest w stanie pomieścić ten obiekt. Jeśli tak nie jest, zostaje rzucony
+    wyjątek TooManyThingsException z komunikatem „Remove some old items to insert a new
+    item”
+    */
+
+    /*
+    Stan osób zamieszkujących osiedle wraz ze wszelkimi danymi dot. osoby, wynajmowanych
+    pomieszczeń, przedmiotów, itp. musi być zapisywane po wybraniu z menu odpowiedniej funkcjonalności. Informacje zapisane w pliku powinny być zapisane przejrzyście i czytelnie dla człowieka
+    z zachowaniem poniższych reguł:
+            • Pomieszczenia powinny być posortowane rosnąco według rozmiaru pomieszczenia.
+            • Zawartość pomieszczenia powinna być posortowana malejąco według rozmiaru przedmiotu
+    jeśli jest taki sam to według nazwy.
+
+     */
+
+
 }
 
