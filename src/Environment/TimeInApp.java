@@ -45,6 +45,8 @@ public class TimeInApp {
 
             System.out.println(" czy weszlo do check 1 ");
 
+
+
          /*   for(Room r: en.roomSet){
                 if((currentDate[0].isAfter(r.getEndRent()[0]))&&(r.getStartRent()!=null)){
 

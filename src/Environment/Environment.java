@@ -148,7 +148,7 @@ public class Environment {
                 System.out.println("  15. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
                 System.out.println("  16. Pokaz wszystkie przedmioty danej osoby");
                 System.out.println("  17. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
-                System.out.println("  18. Zapisz aktualny stan OSIEDLA do pliku ");
+                System.out.println("  18. TEST    TEST   Zapisz aktualny stan OSIEDLA do pliku  TEST");
                 System.out.println("  19. EXIT");
 
                 number = choose(scan);
@@ -285,7 +285,40 @@ public class Environment {
                     show(allItemsOfUser(user));
                 }
 
-                case "18" -> {}
+                case "18" -> {
+                    //   TEST
+
+                    for(Map.Entry<UUID,String>entry:estate.entrySet()) {
+                        if (entry.getValue() != null) {
+
+
+                            for (Room r : roomSet) {
+
+                                if (r.getId().equals(entry.getKey())) {
+
+                                    if (timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) {
+                                        //) && (r.getStartRent() != null)) {
+
+                                        System.out.println(" war 1 AND TESSSSST    ");
+                                        //r.setStartRent(null);
+
+                                        getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId()));
+
+                                        //ponizej ustawienie 30 dniowego okresu karencji przed wyczyszczeniem pomieszczenia
+                                       // r.getEndRent()[0] = r.getEndRent()[0].plusDays(30);
+
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+
+
+
+                    //    TEST
+                }
 
                 case "19" -> {
                     System.out.println(" KONIEC PROGRAMU ");
