@@ -296,16 +296,15 @@ public class Environment {
 
                                 if (r.getId().equals(entry.getKey())) {
 
-                                    if (timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) {
-                                        //) && (r.getStartRent() != null)) {
+                                    if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() != null)) {
 
                                         System.out.println(" war 1 AND TESSSSST    ");
-                                        //r.setStartRent(null);
+                                        r.setStartRent(null);
 
                                         getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId()));
 
                                         //ponizej ustawienie 30 dniowego okresu karencji przed wyczyszczeniem pomieszczenia
-                                       // r.getEndRent()[0] = r.getEndRent()[0].plusDays(30);
+                                        r.getEndRent()[0] = r.getEndRent()[0].plusDays(30);
 
                                     }
                                 }
@@ -666,6 +665,85 @@ public class Environment {
             .collect(Collectors.toList());
     }
 
+    public void checkEndRent(){
+
+        for(Map.Entry<UUID,String>entry:estate.entrySet()) {
+            if (entry.getValue() != null) {
+
+
+                for (Room r : roomSet) {
+
+                    if (r.getId().equals(entry.getKey())) {
+
+                        if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() != null)) {
+
+                            r.setStartRent(null);
+                            getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId()));
+
+                            //ponizej ustawienie 30 dniowego okresu karencji przed wyczyszczeniem pomieszczenia
+
+
+                            //          UWAGA    zmienilem z 30 dni
+                            r.getEndRent()[0] = r.getEndRent()[0].plusDays(5);
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    public void checkLastEndRent() {
+
+        for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+            if (entry.getValue() != null) {
+
+                for (Room r : roomSet) {
+                    if (r.getId().equals(entry.getKey())) {
+                        if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() == null)) {
+
+                            System.out.println(" test  1 czy weszlo ???");
+
+
+                            //usuniecie roboczego file
+                           for (File f : getPerson(r.getPrimaryTenantID()).getFiles()) {
+                                if ((f.roomId.equals(r.getId())) && (f.creationType.equals("UUID"))) {
+                                    getPerson(r.getPrimaryTenantID()).getFiles().remove(f);
+                                }
+                            }
+
+                            //nowe file na trwale
+                            getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId(), r.getEndRent()[0]));
+                            //ustawienie konca wynajmu
+                            r.setEndRent(null);
+
+                            r.setPrimaryTenantID(null);
+
+                        /*    if (r instanceof Garage) {
+                                //Garage garage = (Garage) r;
+                                ((Garage) r).clearGarage(items);
+                            }
+                            if (r instanceof Apartment) {
+                                // Apartment apartment = (Apartment) r;
+                                ((Apartment) r).getPersonsInApartment().clear();
+                            }*/
+
+
+                            //ustawienie w mapie ze nieruchomosc wolna
+                            estate.put(r.getId(), null);
+                        }
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    }
+
     // metoda boool  czy osoba wynajmuje mieszkanie  dopiero wtedy moze wynajac garaz !!!!
 
     /*
@@ -693,5 +771,5 @@ public class Environment {
      */
 
 
-}
+
 
