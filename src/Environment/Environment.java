@@ -187,6 +187,10 @@ public class Environment {
 
                 case "5" -> {
 
+                    // FUNKCJA PRZEDLUZANAI NAJMU  !!!
+
+
+
                     //if(fiveRoomRentLimitation(user)){
                     rentRoom(chooseRoom(Apartment.class),user);
                 //}
@@ -194,12 +198,15 @@ public class Environment {
                       //  System.out.println(" user ma wynajetych 5 nieruchomosci ");
                     //}
 
+
+
+
                 }
 
 
                 case "6" -> {
 
-                    unrentRoom(chooseUserRoom(Apartment.class,user),user);
+                    unRentRoom(chooseUserRoom(Apartment.class,user),user);
                 }
                 case "7" -> {
                     System.out.println("7");
@@ -211,6 +218,7 @@ public class Environment {
                     System.out.println( "  UWAGA PODAC PESEL !!!");
                     // zrobic cos z peselem
                     tempPerson=choosePerson(personsSet);
+                    if(tempPerson!=(null)){
                     System.out.println( "  OSOBA DO DODANIA "+ tempPerson);
                     Apartment apartment=chooseUserRoom(Apartment.class,user);
                     if(apartment==null){
@@ -219,6 +227,7 @@ public class Environment {
                         System.out.println(" W tym momencie nie mozna usunac glownego lokatora-najemce !");
                     }else{
                     apartment.addPersonToApartment(tempPerson);
+                }
                 }
                 }
                 case "9" -> {
@@ -240,6 +249,8 @@ public class Environment {
                 }
                 case "10" -> {
 
+                    // FUNKCJA PRZEDLUZANAI NAJMU  !!!
+
                     if(fiveRoomRentLimitation(user)){
                     rentRoom(chooseRoom(Garage.class),user);
                 }else{
@@ -248,11 +259,11 @@ public class Environment {
                 }
                 case "11" -> {
 
-                    unrentRoom(chooseUserRoom(Garage.class,user),user);
+                    unRentRoom(chooseUserRoom(Garage.class,user),user);
                 }
                 case "12" -> {
 
-                    show(allItemsInGarage(chooseUserRoom(Garage.class,user)));
+                    show(itemsInGarage(chooseUserRoom(Garage.class,user)));
 
                 }
                 case "13" -> {
@@ -260,6 +271,7 @@ public class Environment {
                     itemTemp=chooseItem(items);
                     System.out.println( "  item DO DODANIA "+ itemTemp);
                     Garage garage=chooseUserRoom(Garage.class,user);
+                    items.remove(itemTemp);
                     garage.addItemsToGarage(itemTemp);
                 }
                 case "14" -> {
@@ -288,36 +300,32 @@ public class Environment {
                 case "18" -> {
                     //   TEST
 
-                    for(Map.Entry<UUID,String>entry:estate.entrySet()) {
-                        if (entry.getValue() != null) {
 
 
-                            for (Room r : roomSet) {
+                    System.out.println();
 
-                                if (r.getId().equals(entry.getKey())) {
+                      Room r= chooseUserRoom(Room.class,user);
 
-                                    if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() != null)) {
+                    System.out.println(r);
 
-                                        System.out.println(" war 1 AND TESSSSST    ");
-                                        r.setStartRent(null);
+                    System.out.println();
 
-                                        getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId()));
 
-                                        //ponizej ustawienie 30 dniowego okresu karencji przed wyczyszczeniem pomieszczenia
-                                        r.getEndRent()[0] = r.getEndRent()[0].plusDays(30);
-
-                                    }
-                                }
+                            if (r instanceof Garage) {
+                                //Garage garage = (Garage) r;
+                                ((Garage) r).clearGarage(items);
                             }
-                        }
+                            if (r instanceof Apartment) {
+                                //Apartment apartment = (Apartment) r;
+                                ((Apartment) r).getPersonsInApartment().clear();}
 
-                    }
-
+                        System.out.println();
 
 
 
                     //    TEST
                 }
+
 
                 case "19" -> {
                     System.out.println(" KONIEC PROGRAMU ");
@@ -382,7 +390,7 @@ public class Environment {
     }
 
 
-    public List<Item> allItemsInGarage(Garage garage) {
+    public List<Item> itemsInGarage(Garage garage) {
         if(garage==null){
             return new ArrayList<>();
         }else{
@@ -403,7 +411,7 @@ public class Environment {
         List<UUID>ids=new ArrayList<>();
         List<T>rooms=new ArrayList<>();
         for(Map.Entry<UUID,String>entry:estate.entrySet()){
-             if(entry.getValue()==user.getPesel()){
+             if(Objects.equals(entry.getValue(), user.getPesel())){
                  ids.add( entry.getKey() );
                      }
         }
@@ -518,8 +526,7 @@ public class Environment {
                         if (rentDays <= 0) {
                             System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
                         } else {
-                            if (room instanceof Apartment) {
-                                Apartment apartment = (Apartment) room;
+                            if (room instanceof Apartment apartment) {
 
 
                                 apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
@@ -535,8 +542,7 @@ public class Environment {
                                 apartment.setStartRent(new LocalDate[]{timeInApp.getCurrentDate()[0]});
                                 System.out.println();
                                 System.out.println(user + " wynaja  " + room);
-                            } else if (room instanceof Garage) {
-                                Garage garage = (Garage) room;
+                            } else if (room instanceof Garage garage) {
 
                                 garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
                                 entry.setValue(user.getPesel());
@@ -561,7 +567,7 @@ public class Environment {
 
 
 
-    public <T extends Room> void unrentRoom( T room , Person user) {
+    public <T extends Room> void unRentRoom( T room , Person user) {
 
         if (room != null) {
             for (Map.Entry<UUID, String> entry : estate.entrySet()) {
@@ -572,14 +578,12 @@ public class Environment {
                     room.setPrimaryTenantID(null);
                     room.setStartRent(new LocalDate[]{null});
 
-                    if (room instanceof Apartment) {
-                        Apartment apartment = (Apartment) room;
+                    if (room instanceof Apartment apartment) {
                         apartment.removePersonFromApartment(user);
                         System.out.println();
                         System.out.println(user + " zwolnil  " + room);
                     }
-                    else if (room instanceof Garage) {
-                        Garage garage = (Garage) room;
+                    else if (room instanceof Garage garage) {
 
                         //items.addAll(new HashSet<>(garage.getItemsInGarage()));
 
@@ -645,7 +649,7 @@ public class Environment {
 
         for(Map.Entry<UUID,String>entry:estate.entrySet()){
 
-            if(entry.getValue()==user.getPesel()){
+            if(Objects.equals(entry.getValue(), user.getPesel())){
                 ++count;}
         }
         return count < 5;
@@ -671,20 +675,19 @@ public class Environment {
             if (entry.getValue() != null) {
 
 
-                for (Room r : roomSet) {
+                for (Room room : roomSet) {
 
-                    if (r.getId().equals(entry.getKey())) {
+                    if (room.getId().equals(entry.getKey())) {
 
-                        if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() != null)) {
+                        if ((timeInApp.currentDate[0].isAfter(room.getEndRent()[0])) && (room.getStartRent() != null)) {
 
-                            r.setStartRent(null);
-                            getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId()));
-
-                            //ponizej ustawienie 30 dniowego okresu karencji przed wyczyszczeniem pomieszczenia
+                            room.setStartRent(null);
 
 
                             //          UWAGA    zmienilem z 30 dni
-                            r.getEndRent()[0] = r.getEndRent()[0].plusDays(5);
+                            room.getEndRent()[0] = room.getEndRent()[0].plusDays(10);
+
+                            getPerson(room.getPrimaryTenantID()).getFiles().add(new File(room.getId(),room.getEndRent()[0]));
 
                         }
                     }
@@ -700,39 +703,24 @@ public class Environment {
         for (Map.Entry<UUID, String> entry : estate.entrySet()) {
             if (entry.getValue() != null) {
 
-                for (Room r : roomSet) {
-                    if (r.getId().equals(entry.getKey())) {
-                        if ((timeInApp.currentDate[0].isAfter(r.getEndRent()[0])) && (r.getStartRent() == null)) {
+                for (Room room : roomSet) {
+                    if (room.getId().equals(entry.getKey())) {
+                        if ((timeInApp.currentDate[0].isAfter(room.getEndRent()[0])) && (room.getStartRent() == null)) {
 
-                            System.out.println(" test  1 czy weszlo ???");
-
-
-                            //usuniecie roboczego file
-                           for (File f : getPerson(r.getPrimaryTenantID()).getFiles()) {
-                                if ((f.roomId.equals(r.getId())) && (f.creationType.equals("UUID"))) {
-                                    getPerson(r.getPrimaryTenantID()).getFiles().remove(f);
-                                }
-                            }
-
-                            //nowe file na trwale
-                            getPerson(r.getPrimaryTenantID()).getFiles().add(new File(r.getId(), r.getEndRent()[0]));
                             //ustawienie konca wynajmu
-                            r.setEndRent(null);
+                            room.setEndRent(null);
 
-                            r.setPrimaryTenantID(null);
+                           room.setPrimaryTenantID(null);
 
-                        /*    if (r instanceof Garage) {
-                                //Garage garage = (Garage) r;
-                                ((Garage) r).clearGarage(items);
+                           if (room instanceof Garage) {
+                                ((Garage) room).clearGarage(items);
                             }
-                            if (r instanceof Apartment) {
-                                // Apartment apartment = (Apartment) r;
-                                ((Apartment) r).getPersonsInApartment().clear();
-                            }*/
-
+                            if (room instanceof Apartment) {
+                                ((Apartment) room).getPersonsInApartment().clear();
+                            }
 
                             //ustawienie w mapie ze nieruchomosc wolna
-                            estate.put(r.getId(), null);
+                            estate.put(room.getId(), null);
                         }
                     }
                 }

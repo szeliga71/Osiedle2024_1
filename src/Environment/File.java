@@ -31,4 +31,14 @@ public class File {
 
         limitationPeriod= ChronoUnit.DAYS.between(start,end);
     }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "roomId=" + roomId +
+                ", endRentDate=" + endRentDate +
+                ", creationType='" + creationType + '\'' +
+                ", limitationPeriod=" + limitationPeriod +
+                '}';
+    }
 }
