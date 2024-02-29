@@ -31,7 +31,7 @@ public class Garage extends Room{
     }
     public void removeItemFromGarage(Item item,Set<Item>items){
 
-        itemsInGarage.remove(item);
+        this.itemsInGarage.remove(item);
         items.add(item);
     }
 
