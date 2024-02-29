@@ -291,9 +291,11 @@ public class Environment {
                 case "14" -> {
 
                     Garage garage=chooseUserRoom(Garage.class,user);
+                    System.out.println(garage);
                     if(garage==null){System.out.println(" nie mozna dokonac tej operacji !");
                         break;}
                     else{
+                        System.out.println(garage.getItemsInGarage());
                         itemTemp=chooseItem(garage.getItemsInGarage());
                         System.out.println( "  item DO USUNIECIA "+ itemTemp);
                     }
@@ -462,10 +464,10 @@ public class Environment {
         }
         return user;
     }
-    public Item getItem(UUID itemId) {
+    public Item getItem(UUID itemId,Set<Item>itemSet) {
 
         Item item = null;
-        for (Item it : items) {
+        for (Item it : itemSet) {
             if (itemId.equals(it.getId())) {
                 item = it;
             }
@@ -648,7 +650,7 @@ public class Environment {
         UUID id = allItems(items).get(index).getId();
 
 
-        return getItem(id);
+        return getItem(id,items);
     }
     public boolean fiveRoomRentLimitation(Person user){
 
