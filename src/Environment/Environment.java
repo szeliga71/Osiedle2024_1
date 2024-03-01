@@ -173,12 +173,12 @@ public class Environment {
 
                 case "5" -> {
                     try{
-                    rentRoom(chooseRoom(Apartment.class), user);}catch(ProblematicTenantException e){
+                    rentRoom(chooseRoom(Apartment.class), user);}
+                    catch(ProblematicTenantException e){
                         System.out.println(e.getMessage());
                     }
                 }
-                case "6" -> // FUNKCJA PRZEDLUZANAI NAJMU  !!!
-                        extendRent(chooseUserRoomForExtend(Apartment.class, user),user);
+                case "6" -> extendRent(chooseUserRoomForExtend(Apartment.class, user),user);
 
                 case "7" -> unRentRoom(chooseUserRoom(Apartment.class, user), user);
                 case "8" -> show(personsInApartment(chooseUserRoom(Apartment.class, user)));
@@ -197,8 +197,6 @@ public class Environment {
 
                 }
                 case "10" -> {
-                    System.out.println("9");
-
 
                     Apartment apartment = chooseUserRoom(Apartment.class, user);
                     if (apartment == null) {
@@ -228,8 +226,7 @@ public class Environment {
                         System.out.println(e.getMessage());
                     }
                 }
-                case "12" -> // FUNKCJA PRZEDLUZANAI NAJMU  !!!
-                        extendRent(chooseUserRoomForExtend(Garage.class, user),user);
+                case "12" -> extendRent(chooseUserRoomForExtend(Garage.class, user),user);
                 case "13" -> unRentRoom(chooseUserRoom(Garage.class, user), user);
                 case "14" -> show(itemsInGarage(chooseUserRoom(Garage.class, user)));
                 case "15" -> {
@@ -290,7 +287,7 @@ public class Environment {
                 }
 
                 case "20" -> //   TEST
-                    //show(roomsOfUserForLonger(Apartment.class,user));
+
                     //    TEST
                         extendRent(chooseUserRoomForExtend(Room.class, user),user);
 
@@ -565,6 +562,12 @@ public class Environment {
     }
 
     public <T extends Room> T  chooseUserRoom(Class<T>propertyClass,Person user) {
+
+
+//   OPTIONAL ZAMIAT UZERAC SIE Z NULLLLL   !!!!!!!!
+
+
+        //                     OPTIONALLLLL
 
         if (roomsOfUser(propertyClass, user).size() == 0) {
             System.out.println(" user nie ma jeszcze wynajetych zadnych nieruchomosci !");
