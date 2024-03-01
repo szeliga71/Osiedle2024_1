@@ -183,16 +183,27 @@ public class Environment {
                 case "7" -> unRentRoom(chooseUserRoom(Apartment.class, user), user);
                 case "8" -> show(personsInApartment(chooseUserRoom(Apartment.class, user)));
                 case "9" -> {
-                    Apartment apartment = chooseUserRoom(Apartment.class, user);
-                    if (apartment == null) {
-                        System.out.println(" nie mozna dokonac tej operacji !");
-                        break;
-                    } else {
-                        tempPerson = choosePerson(personsSet);
+
+                    // teraz wersja z uzyciem optionala
+
+
+                    Optional<Apartment>apartmentOp=chooseUserOptionalRoom(Apartment.class,user);
+                    Optional<Person>tempPersonOp=chooseOptionalPerson(personsSet);
+                    //Apartment apartment = chooseUserRoom(Apartment.class, user);
+                    //if (apartment == null) {
+                        //System.out.println(" nie mozna dokonac tej operacji !");
+                    if(apartmentOp.isPresent()){
+                    //{System.out.println(" nie mozna dokonac tej operacji !");
+                      //  break;
+                    //} else {
+
+                        //tempPerson = choosePerson(personsSet);
                     }
-                    if (tempPerson != (null)) {
-                        System.out.println("  OSOBA DO DODANIA " + tempPerson);
-                        apartment.addPersonToApartment(tempPerson);
+                    if(tempPersonOp.isPresent()){
+                    //if ((tempPerson != (null))&&(apartmentOp.isPresent())) {
+
+                        System.out.println("  OSOBA DO DODANIA " + tempPersonOp.get());
+                        apartmentOp.get().addPersonToApartment(tempPersonOp.get());
                     }
 
                 }
@@ -470,6 +481,22 @@ public class Environment {
         String pesel = choose(scan);
         return getPerson(pesel);
     }
+    public Optional<Person> chooseOptionalPerson(Set<Person> personsSet) {
+
+        Optional<Person>person=null;
+
+        System.out.println(" Prosze podac pesel osoby ktora chcesz wybrac  : " + '\n');
+        show(allPersons(personsSet));
+        System.out.println();
+        String pesel = choose(scan);
+        //return getPerson(pesel);
+        for(Person p:personsSet){
+            if(p.getPesel().equals(pesel)){
+                person=Optional.ofNullable(p);
+            }
+        }
+   return person;}
+
     public <T extends Room> T  chooseRoom(Class<T>propertyClass) {
 
         if (freeRoomsApartmentOrGarage(propertyClass).isEmpty()) {
@@ -564,6 +591,7 @@ public class Environment {
     public <T extends Room> T  chooseUserRoom(Class<T>propertyClass,Person user) {
 
 
+
 //   OPTIONAL ZAMIAT UZERAC SIE Z NULLLLL   !!!!!!!!
 
 
@@ -596,6 +624,39 @@ public class Environment {
             }
         }
     }
+
+    public <T extends Room> Optional<T>  chooseUserOptionalRoom(Class<T>propertyClass,Person user) {
+
+        List<T>rooms=roomsOfUser(propertyClass,user);
+
+        if(rooms.isEmpty()) {
+            System.out.println(" user nie ma jeszcze wynajetych zadnych nieruchomosci !");
+            return Optional.empty();
+        }else {
+            System.out.println(" Prosze podac numer pod ktorym znajduje sie nieruchomosc ,ktora chcesz wybrac  : " + '\n');
+
+            show(rooms);
+
+            System.out.println(" numer  :");
+                int position = -1;
+                try {
+                    position = (Integer.parseInt(choose(scan))) - 1;
+
+                } catch (NumberFormatException e) {
+                    System.out.println(" wprowadzono nieprawidlowa liczbe , sprobuj ponownie !");
+                    return Optional.empty();
+                }
+                if ((position < 0) || (position >= rooms.size())){
+
+        return Optional.empty();
+
+
+        } else {
+        return Optional.of(rooms.get(position));
+                }
+            }
+        }
+
 
     public Item chooseItem(Set<Item> items) {
 
