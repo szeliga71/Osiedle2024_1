@@ -184,7 +184,7 @@ public class Environment {
                 case "8" -> show(personsInApartment(chooseUserRoom(Apartment.class, user)));
                 case "9" -> {
 
-                    // teraz wersja z uzyciem optionala
+                    // teraz wersja z uzyciem optionala popra
 
 
                     Optional<Apartment>apartmentOp=chooseUserOptionalRoom(Apartment.class,user);
