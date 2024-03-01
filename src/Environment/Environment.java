@@ -117,7 +117,7 @@ public class Environment {
 
 
             Item itemTemp ;
-            Person tempPerson;
+
 
             String number;
 
@@ -183,55 +183,31 @@ public class Environment {
                 case "7" -> unRentRoom(chooseUserRoom(Apartment.class, user), user);
                 case "8" -> show(personsInApartment(chooseUserRoom(Apartment.class, user)));
                 case "9" -> {
-
-                    // teraz wersja z uzyciem optionala popra
-
-
-                    Optional<Apartment>apartmentOp=chooseUserOptionalRoom(Apartment.class,user);
-
-                    //Apartment apartment = chooseUserRoom(Apartment.class, user);
-                    //if (apartment == null) {
-                        //System.out.println(" nie mozna dokonac tej operacji !");
-                    if(apartmentOp.isPresent()){
-                        Optional<Person>tempPersonOp=chooseOptionalPerson(personsSet);
-                    //{System.out.println(" nie mozna dokonac tej operacji !");
-                      //  break;
-                    //} else {
-
-                        //tempPerson = choosePerson(personsSet);
-
-                    if(tempPersonOp.isPresent()){
-                    //if ((tempPerson != (null))&&(apartmentOp.isPresent())) {
-
-                        System.out.println("  OSOBA DO DODANIA " + tempPersonOp.get());
-                        apartmentOp.get().addPersonToApartment(tempPersonOp.get());
-                    }}
-
+                    Optional<Apartment>apartment=chooseUserOptionalRoom(Apartment.class,user);
+                    if(apartment.isPresent()){
+                        Optional<Person>tempPersonO=chooseOptionalPerson(personsSet);
+                        if(tempPersonO.isPresent()) {
+                            System.out.println("  OSOBA DO DODANIA " + tempPersonO.get());
+                            apartment.get().addPersonToApartment(tempPersonO.get());
+                        }
+                    }
                 }
                 case "10" -> {
-
-                    Apartment apartment = chooseUserRoom(Apartment.class, user);
-                    if (apartment == null) {
-                        System.out.println(" nie mozna dokonac tej operacji !");
-                        break;
-                    } else {
-                        tempPerson = choosePerson(apartment.getPersonsInApartment());
+                    Optional<Apartment>apartment=chooseUserOptionalRoom(Apartment.class,user);
+                    if(apartment.isPresent()){
+                        Optional<Person>tempPersonO=chooseOptionalPerson(apartment.get().getPersonsInApartment());
+                        if(tempPersonO.isPresent()) {
+                    if (apartment.get().getPrimaryTenantID().equals(tempPersonO.get().getPesel())) {
+                            System.out.println(" nie ma zameldowanych innych osob poza glownym wynajmujacym badz podana osoba jest glownym najemca ! +'\n" +
+                                    "W tym momencie nie mozna tej osoby wymeldowac !");
+                    break;
                     }
-
-                    if (tempPerson == null) {
-
-                        System.out.println(" prosze podfac odpowiedni numer pesel !!!");
-                    } else if (apartment.getPrimaryTenantID().equals(tempPerson.getPesel())) {
-                        System.out.println(" nie ma zameldowanych innych osob poza glownym wynajmujacym badz podana osoba jest glownym najemca ! +'\n" +
-                                "W tym momencie nie mozna tej osoby wymeldowac !");
-
-                    } else {
-
-                        apartment.removePersonFromApartment(tempPerson);
-
-                        System.out.println(tempPerson + "  Wymeldowany ");
+                    apartment.get().removePersonFromApartment(tempPersonO.get());
+                    System.out.println(tempPersonO.get() + "  Wymeldowany ");
+                        }
                     }
                 }
+
                 case "11" ->{
                     try{
                     rentRoom(chooseRoom(Garage.class), user);}catch(ProblematicTenantException e){
@@ -484,13 +460,12 @@ public class Environment {
     }
     public Optional<Person> chooseOptionalPerson(Set<Person> personsSet) {
 
-        Optional<Person>person=null;
+        Optional<Person>person= Optional.empty();
 
         System.out.println(" Prosze podac pesel osoby ktora chcesz wybrac  : " + '\n');
         show(allPersons(personsSet));
         System.out.println();
         String pesel = choose(scan);
-        //return getPerson(pesel);
         for(Person p:personsSet){
             if(p.getPesel().equals(pesel)){
                 person=Optional.ofNullable(p);
@@ -639,7 +614,7 @@ public class Environment {
             show(rooms);
 
             System.out.println(" numer  :");
-                int position = -1;
+                int position;
                 try {
                     position = (Integer.parseInt(choose(scan))) - 1;
 
