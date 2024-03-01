@@ -1,5 +1,6 @@
 package EstateObjects;
 
+import Environment.TooManyThingsException;
 import Items.Item;
 
 import java.util.HashSet;
@@ -20,15 +21,18 @@ public class Garage extends Room{
         return itemsInGarage;
     }
 
-    public void addItemsToGarage(Item item){
+
+    public void addItemsToGarage(Item item) throws TooManyThingsException{
+
         if(item.getSize()+volume<this.getArea()){
+    throw new TooManyThingsException(" Niewystarczajaca ilosc miejsca w garazu "); }else{
+
+            System.out.println(" mozna wlozyc obiekt do garazu ");
+        }
         itemsInGarage.add(item);
         setVolume(item.getSize()+volume);}
-        else{
-            System.out.println(" nie ma wystarczajaco miejsca w garazu ");
-        }
 
-    }
+
 
     //  SPRAWDZIC TE METODE   !!!!albo weg
    /* public void removeItemFromGarage(Item item,Set<Item>items){
