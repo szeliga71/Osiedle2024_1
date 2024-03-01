@@ -61,7 +61,7 @@ public class Environment {
 
         Citi_Car sm1 = new Citi_Car(6, "Suzuki", "Swift", Fuel.BENZIN, 1000, true, "White");
         Off_Road_Car st1 = new Off_Road_Car(28, "Toyota", "RAV4", Fuel.DIESEL, 2500, 16);
-        Amfibia am1 = new Amfibia(15, "UNIMAG", "AM!", Fuel.ELECTICITI, 150, true, true);
+        Amfibia am1 = new Amfibia(15, "UNIMAG", "AM!", Fuel.ELECTRICITI, 150, true, true);
 
         Thing t1 = new Thing("grabie", 1);
         Thing t2 = new Thing("lopata", 2);
