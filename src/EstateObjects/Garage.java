@@ -34,13 +34,6 @@ public class Garage extends Room{
 
 
 
-    //  SPRAWDZIC TE METODE   !!!!albo weg
-   /* public void removeItemFromGarage(Item item,Set<Item>items){
-
-        this.itemsInGarage.remove(item);
-        items.add(item);
-    }*/
-
     public void clearGarage(Set<Item> items){
         items.addAll(this.getItemsInGarage());
         itemsInGarage.clear();

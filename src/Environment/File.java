@@ -26,12 +26,6 @@ public class File {
         this.creationType="UUID";
     }
 
-    //eventualne wyliczenie dni spoznienia
-    public void setLimitationPeriod(LocalDate start,LocalDate end){
-
-        limitationPeriod= ChronoUnit.DAYS.between(start,end);
-    }
-
     @Override
     public String toString() {
         return "File{" +

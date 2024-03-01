@@ -1,11 +1,7 @@
 package Environment;
 
-import EstateObjects.Apartment;
-import EstateObjects.Garage;
-import EstateObjects.Room;
 
 import java.time.LocalDate;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

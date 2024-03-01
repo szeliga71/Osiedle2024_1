@@ -1,6 +1,5 @@
 import Environment.Environment;
 
-import java.util.Scanner;
 
 public class Main {
 

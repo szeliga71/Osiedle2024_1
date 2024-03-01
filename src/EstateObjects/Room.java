@@ -1,7 +1,5 @@
 package EstateObjects;
 
-import People.Person;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.UUID;
@@ -49,13 +47,6 @@ public abstract class Room {
         this.endRent = endRent;
     }
 
-   /* public Person getPrimaryTenant() {
-        return primaryTenant;
-    }
-
-    public void setPrimaryTenant(Person primaryTenant) {
-        this.primaryTenant = primaryTenant;
-    }*/
 
     public String getPrimaryTenantID() {
         return primaryTenantID;
@@ -77,9 +68,7 @@ public abstract class Room {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Room)) return false;
-
-        Room room = (Room) o;
+        if (!(o instanceof Room room)) return false;
 
         if (getArea() != room.getArea()) return false;
         return getId().equals(room.getId());
