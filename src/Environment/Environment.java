@@ -40,9 +40,9 @@ public class Environment {
         roomSet = new HashSet<>();
         items = new HashSet<>();
 
-        scan=new Scanner(System.in);
+        scan = new Scanner(System.in);
 
-        timeInApp=new TimeInApp(this);
+        timeInApp = new TimeInApp(this);
 
 //===============================================================
 
@@ -133,20 +133,22 @@ public class Environment {
                 System.out.println("  3.  Pokaz wszystkie mieszkania");
                 System.out.println("  4.  Pokaz wszystkie garaze");
                 System.out.println("  5.  Pokaz wolne mieszkania/ Wynajem mieszkania !");
-                System.out.println("  6.  Zwolnij mieszkanie");
-                System.out.println("  7.  Pokaz lokatorow w mieszkaniu");
-                System.out.println("  8.  Dodaj lokatora do mieszkania");
-                System.out.println("  9.  Usun lokatora z mieszkanaia ");
-                System.out.println("  10. Pokaz wolne garaze/ Wynajem garazu !");
-                System.out.println("  11. Zwolnij garaz");
-                System.out.println("  12. Pokaz wszystkie przedmioty w garazu");
-                System.out.println("  13. Dodaj przedmiot do garazu");
-                System.out.println("  14. Usun przedmiot z garazu");
-                System.out.println("  15. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
-                System.out.println("  16. Pokaz wszystkie przedmioty danej osoby");
-                System.out.println("  17. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
-                System.out.println("  18. TEST    TEST   Zapisz aktualny stan OSIEDLA do pliku  TEST");
-                System.out.println("  19. EXIT" + '\n');
+                System.out.println("  6.  Przedluzenie wynajmu mieszkania ");
+                System.out.println("  7.  Zwolnij mieszkanie");
+                System.out.println("  8.  Pokaz lokatorow w mieszkaniu");
+                System.out.println("  9.  Dodaj lokatora do mieszkania");
+                System.out.println("  10.  Usun lokatora z mieszkanaia ");
+                System.out.println("  11. Pokaz wolne garaze/ Wynajem garazu !");
+                System.out.println("  12.  Przedluzenie wynajmu garazu ");
+                System.out.println("  13. Zwolnij garaz");
+                System.out.println("  14. Pokaz wszystkie przedmioty w garazu");
+                System.out.println("  15. Dodaj przedmiot do garazu");
+                System.out.println("  16. Usun przedmiot z garazu");
+                System.out.println("  17. Pokaz wszyskie nieruchomosci wynajmowane przez osobe");
+                System.out.println("  18. Pokaz wszystkie przedmioty danej osoby");
+                System.out.println("  19. Pokaz dane uzytkownika i wszystkie nieruchomosci i wszystkie przedmioty");
+                System.out.println("  20. TEST    TEST   Zapisz aktualny stan OSIEDLA do pliku  TEST");
+                System.out.println("  21. EXIT" + '\n');
 
                 number = choose(scan);
 
@@ -184,37 +186,26 @@ public class Environment {
 
                 case "5" -> {
 
-                    // FUNKCJA PRZEDLUZANAI NAJMU  !!!
 
-
-                    //if(fiveRoomRentLimitation(user)){
                     rentRoom(chooseRoom(Apartment.class), user);
-                    //}
-                    //else {
-                    //  System.out.println(" user ma wynajetych 5 nieruchomosci ");
-                    //}
-
 
                 }
-
-
                 case "6" -> {
+
+                    // FUNKCJA PRZEDLUZANAI NAJMU  !!!
+
+                    longerRent(chooseUserRoomForLonger(Apartment.class, user),user);
+                }
+
+                case "7" -> {
 
                     unRentRoom(chooseUserRoom(Apartment.class, user), user);
                 }
-                case "7" -> {
+                case "8" -> {
                     show(personsInApartment(chooseUserRoom(Apartment.class, user)));
 
                 }
-                case "8" -> {
-
-                    //System.out.println( "  UWAGA PODAC PESEL !!!");
-                    // zrobic cos z peselem
-                    //tempPerson=choosePerson(personsSet);
-                    //if(tempPerson!=(null)){
-
-
-                    //System.out.println( "  OSOBA DO DODANIA "+ tempPerson);
+                case "9" -> {
 
 
                     Apartment apartment = chooseUserRoom(Apartment.class, user);
@@ -226,18 +217,13 @@ public class Environment {
                     }
                     if (tempPerson != (null)) {
                         System.out.println("  OSOBA DO DODANIA " + tempPerson);
-                        apartment.addPersonToApartment(tempPerson);}
-
-                        //   }else if(apartment.getPrimaryTenantID().equals(tempPerson.getPesel())){
-                        //     System.out.println(" W tym momencie nie mozna usunac glownego lokatora-najemce !");
-                        //}else{
+                        apartment.addPersonToApartment(tempPerson);
                     }
 
+                }
 
 
-
-                case "9" -> {
-                    // PRzetestowac
+                case "10" -> {
                     System.out.println("9");
 
 
@@ -245,83 +231,89 @@ public class Environment {
                     if (apartment == null) {
                         System.out.println(" nie mozna dokonac tej operacji !");
                         break;
-                    } else{
-                        tempPerson = choosePerson(apartment.getPersonsInApartment());}
+                    } else {
+                        tempPerson = choosePerson(apartment.getPersonsInApartment());
+                    }
 
-                        if (tempPerson == null){
+                    if (tempPerson == null) {
 
-                            System.out.println(" prosze podfac odpowiedni numer pesel !!!");}
+                        System.out.println(" prosze podfac odpowiedni numer pesel !!!");
+                    } else if (apartment.getPrimaryTenantID().equals(tempPerson.getPesel())) {
+                        System.out.println(" nie ma zameldowanych innych osob poza glownym wynajmujacym badz podana osoba jest glownym najemca ! +'\n" +
+                                "W tym momencie nie mozna tej osoby wymeldowac !");
 
+                    } else {
 
-                                else if(apartment.getPrimaryTenantID().equals(tempPerson.getPesel())) {
-                            System.out.println(" nie ma zameldowanych innych osob poza glownym wynajmujacym badz podana osoba jest glownym najemca ! +'\n"+
-                                    "W tym momencie nie mozna tej osoby wymeldowac !");
+                        apartment.removePersonFromApartment(tempPerson);
 
-                        } else {
-
-                            apartment.removePersonFromApartment(tempPerson);
-
-                            System.out.println(tempPerson + "  Wymeldowany ");
+                        System.out.println(tempPerson + "  Wymeldowany ");
 
                     }
                 }
-                case "10" -> {
+                case "11" ->{
+
+                    rentRoom(chooseRoom(Garage.class), user);
+
+                }
+
+                case "12" -> {
 
                     // FUNKCJA PRZEDLUZANAI NAJMU  !!!
 
-                    rentRoom(chooseRoom(Garage.class),user);
+                    longerRent(chooseUserRoomForLonger(Garage.class, user),user);
 
                 }
-                case "11" -> {
+                case "13" ->{
 
-                    unRentRoom(chooseUserRoom(Garage.class,user),user);
+                    unRentRoom(chooseUserRoom(Garage.class, user), user);
                 }
-                case "12" -> {
-
-                    show(itemsInGarage(chooseUserRoom(Garage.class,user)));
-
-                }
-                case "13" -> {
-
-                    Garage garage=chooseUserRoom(Garage.class,user);
-                    if(garage==null){System.out.println(" nie mozna dokonac tej operacji !");
-                    break;}
-                    else{
-                        itemTemp=chooseItem(items);
-                        System.out.println( "  item DO DODANIA "+ itemTemp);
-                    }
-                    if(itemTemp!=null){
-                    items.remove(itemTemp);
-                    garage.addItemsToGarage(itemTemp);
-                }
-                }
-
-
                 case "14" -> {
 
-                    Garage garage=chooseUserRoom(Garage.class,user);
-                    if(garage==null)
-                    {System.out.println(" nie mozna dokonac tej operacji !");
-                        break;}
-                    else{
-                        itemTemp=chooseItem(garage.getItemsInGarage());
+                    show(itemsInGarage(chooseUserRoom(Garage.class, user)));
+
+                }
+                case "15" -> {
+
+                    Garage garage = chooseUserRoom(Garage.class, user);
+                    if (garage == null) {
+                        System.out.println(" nie mozna dokonac tej operacji !");
+                        break;
+                    } else {
+                        itemTemp = chooseItem(items);
+                        System.out.println("  item DO DODANIA " + itemTemp);
+                    }
+                    if (itemTemp != null) {
+                        items.remove(itemTemp);
+                        garage.addItemsToGarage(itemTemp);
+                    }
+                }
+
+
+                case "16" -> {
+
+                    Garage garage = chooseUserRoom(Garage.class, user);
+                    if (garage == null) {
+                        System.out.println(" nie mozna dokonac tej operacji !");
+                        break;
+                    } else {
+                        itemTemp = chooseItem(garage.getItemsInGarage());
 
                     }
-                    if(itemTemp!=null){
+                    if (itemTemp != null) {
 
                         items.add(itemTemp);
 
                         garage.getItemsInGarage().remove(itemTemp);
-                        System.out.println( "  Przedmiot  "+ itemTemp+ "  USUNIETY ");
+                        System.out.println("  Przedmiot  " + itemTemp + "  USUNIETY ");
                     }
                 }
 
-                case "15" -> {
+                case "17" -> {
 
                     System.out.println(" NIERUCHOMOSCI WYNAJMOWANE PRZEZ UZYTKOWNIKA");
-                    show(roomsOfUser(Room.class,user));
+                    show(roomsOfUser(Room.class, user));
                 }
-                case "16" -> {
+                case "18" -> {
 
                     System.out.println(" WSZYSTKIE PRZEDMIOTY UZYTKOWNIKA");
 
@@ -330,46 +322,26 @@ public class Environment {
 
 
                 }
-                case "17" -> {
+                case "19" -> {
                     System.out.println(" DANE UZYTKOWNIKA");
                     System.out.println(user);
                     System.out.println(" NIERUCHOMOSCI WYNAJMOWANE PRZEZ UZYTKOWNIKA");
-                    show(roomsOfUser(Room.class,user));
+                    show(roomsOfUser(Room.class, user));
                     System.out.println(" WSZYSTKIE PRZEDMIOTY UZYTKOWNIKA");
                     show(allItemsOfUser(user));
                 }
 
-                case "18" -> {
+                case "20" -> {
                     //   TEST
 
-
-
-                    System.out.println();
-
-                      Room r= chooseUserRoom(Room.class,user);
-
-                    System.out.println(r);
-
-                    System.out.println();
-
-
-                            if (r instanceof Garage) {
-                                //Garage garage = (Garage) r;
-                                ((Garage) r).clearGarage(items);
-                            }
-                            if (r instanceof Apartment) {
-                                //Apartment apartment = (Apartment) r;
-                                ((Apartment) r).getPersonsInApartment().clear();}
-
-                        System.out.println();
-
-
+                    longerRent(chooseUserRoomForLonger(Room.class, user),user);
+                    //show(roomsOfUserForLonger(Apartment.class,user));
 
                     //    TEST
                 }
 
 
-                case "19" -> {
+                case "21" -> {
                     System.out.println(" KONIEC PROGRAMU ");
                     //timeInApp.timeRun(this) scheduledExecutorService.shutdown();
                     System.exit(125);
@@ -393,6 +365,57 @@ public class Environment {
         }
     }
 
+    private <T extends Room> void longerRent(T room, Person user) {
+
+        if (room != null) {
+
+            for (Map.Entry<UUID, String> entry : estate.entrySet()) {
+                if (entry.getKey() == room.getId()) {
+
+                    System.out.println(" podaj ilosc dni do przedluzenia wynajmu :");
+                    long rentDays = -1;
+                    try {
+                        rentDays = Long.parseLong(choose(scan));
+                    } catch (NumberFormatException e) {
+                        System.out.println(" wprowadzono nieprawidlowa liczbe , powrot do glownego menu ... ");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ie) {
+                            ie.printStackTrace();
+                        }
+                    }
+
+
+                    if (rentDays <= 0) {
+                        System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
+                    } else {
+                        if (room instanceof Apartment apartment) {
+                            //apartment.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                            apartment.setEndRent(new LocalDate[]{timeInApp.getCurrentDate()[0].plusDays(rentDays)});
+                            entry.setValue(user.getPesel());
+                            apartment.setPrimaryTenantID(user.getPesel());
+                            apartment.addPersonToApartment(user);
+                            apartment.setStartRent(new LocalDate[]{timeInApp.getCurrentDate()[0]});
+                            System.out.println();
+                            System.out.println(user + " przedluzyl wynajem  " + room);
+                        } else if (room instanceof Garage garage) {
+                            garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
+                            entry.setValue(user.getPesel());
+                            garage.setPrimaryTenantID(user.getPesel());
+                            garage.setStartRent(new LocalDate[]{LocalDate.now()});
+                            System.out.println();
+                            System.out.println(user + " przedluzyl wynajem   " + room);
+                        }
+
+
+                    }
+                }
+            }
+
+                    } else{
+                        System.out.println(" prosze prawidlowo wybrac obiekt ! ");
+                    }
+                }
 
     public String choose(Scanner scan) {
 
@@ -693,12 +716,31 @@ public class Environment {
 
     public List<Item> allItemsOfUser(Person user){
 
-        List<Garage>tempGarage= roomsOfUser(Garage.class, user).stream().toList();
+        List<Item>items=new ArrayList<>();
 
-    return tempGarage.stream()
+       List<Garage>tempGarage=roomsOfUser(Garage.class, user).stream().toList();
+
+        // ze wzg na komunikat nie stosuje ponizszej metody
+                //roomsOfUser(Garage.class, user).stream().toList();
+
+
+        for(Garage g:tempGarage){
+            items.addAll(g.getItemsInGarage());
+
+        }
+        if(items.isEmpty()){
+            System.out.println(" uzytkownik nie posiada jeszcze zadnych przedmiotow ");
+        }
+
+    /*return tempGarage.stream()
             .map(Garage::getItemsInGarage)
             .flatMap(Set::stream)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList());*/
+    return items;}
+
+    public void longerRent(){
+
+
     }
 
     public void checkEndRent(){
@@ -761,8 +803,60 @@ public class Environment {
 
         }
     }
+    public <T extends Room> List<T> roomsOfUserForLonger(Class<T>propertyClass,Person user){
+        List<UUID>ids=new ArrayList<>();
+        List<T>rooms=new ArrayList<>();
+        for(Map.Entry<UUID,String>entry:estate.entrySet()){
+            if(Objects.equals(entry.getValue(), user.getPesel())){
+                ids.add( entry.getKey() );
+            }
+        }
 
+
+        for(Room room:roomSet){
+            for(UUID id:ids){
+                if((room.getId().equals(id))&&(propertyClass.isInstance(room))&&(room.getStartRent()==null)){
+                    rooms.add((T)room);
+                }
+            }
+        }
+        if(rooms.isEmpty()){
+            System.out.println(" Uzytkownik nie ma  zaleglosci ");
+
+        }
+
+        return rooms;}
+
+    public <T extends Room> T  chooseUserRoomForLonger(Class<T>propertyClass,Person user) {
+
+        if (roomsOfUserForLonger(propertyClass, user).size() == 0) {
+            System.out.println(" user nie ma  zadnych zaleglosci !");
+            return null;
+        } else {
+
+            System.out.println(" Prosze podac numer pod ktorym znajduje sie nieruchomosc ,ktora chcesz wybrac  : " + '\n');
+
+            show(roomsOfUserForLonger(propertyClass, user));
+
+            {
+                System.out.println(" numer  :");
+                int position = -1;
+                try {
+                    position = (Integer.parseInt(choose(scan))) - 1;
+
+                } catch (NumberFormatException e) {
+                    System.out.println(" wprowadzono nieprawidlowa liczbe , sprobuj ponownie !");
+                }
+
+                if ((position < 0) || (position > roomsOfUserForLonger(propertyClass, user).size() - 1)) {
+                    return null;
+                } else {
+                    return roomsOfUserForLonger(propertyClass, user).get(position);
+                }
+            }
+        }
     }
+}
 
     // metoda boool  czy osoba wynajmuje mieszkanie  dopiero wtedy moze wynajac garaz !!!!
 

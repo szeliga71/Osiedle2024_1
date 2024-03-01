@@ -37,7 +37,7 @@ public class TimeInApp {
             currentDate[0] = currentDate[0].plusDays(1);
 
             // to pokazuje aktualny czas w konsoli
-           //System.out.println(currentDate[0]);
+           System.out.println(currentDate[0]);
         };
 
         // watek 2 - sprawdzanie daty konca wynajmu
