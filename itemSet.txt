@@ -1,0 +1,7 @@
+Off_Road_Car{Veihcle{marke='Toyota', model='RAV4', fuel=DIESEL, engine_Capacity=2500}how_many_halogens=16}
+grabie 1
+betoniarka 4
+lopata 2
+Citi_Car{Veihcle{marke='Suzuki', model='Swift', fuel=BENZIN, engine_Capacity=1000}park_asistant=true, color='White'}
+kosiarka 2
+Amfibia{}Veihcle{marke='UNIMAG', model='AM!', fuel=ELECTRICITI, engine_Capacity=150}

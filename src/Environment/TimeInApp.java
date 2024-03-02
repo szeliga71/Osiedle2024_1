@@ -10,22 +10,31 @@ public class TimeInApp {
 
     public Environment en;
 
+    ScheduledExecutorService scheduledExecutorService;// = Executors.newScheduledThreadPool(3);
+
     final LocalDate[] currentDate = {LocalDate.now()};
 
 
     public TimeInApp(Environment en) {
         this.en = en;
+        scheduledExecutorService=Executors.newScheduledThreadPool(3);
     }
+
 
     public LocalDate[] getCurrentDate() {
         return currentDate;
+    }
+
+    public void timeRunShutDown(){
+        this.scheduledExecutorService.shutdown();
+
     }
 
     public void timeRun(Environment en) {
 
 
         //pula watkow 3 watki
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
+        //ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
 
         //watek 1 - symulacja czasu
 

@@ -1,0 +1,3 @@
+PESEL : 45  , imie    Bronislaw, nazwisko    Cieslak, narodowosc    FRENCH 0 [].
+PESEL : 43  , imie    Jan, nazwisko    Kowalski, narodowosc    POLISH 0 [].
+PESEL : 44  , imie    Kamil, nazwisko    Nowak, narodowosc    DEUTSCH 0 [].
