@@ -24,8 +24,10 @@ public class Garage extends Room{
 
     public void addItemsToGarage(Item item) throws TooManyThingsException{
 
-        if(item.getSize()+volume<this.getArea()){
-    throw new TooManyThingsException(" Niewystarczajaca ilosc miejsca w garazu "); }else{
+        if(item.getSize()+volume>this.getArea()){
+    throw new TooManyThingsException(" Niewystarczajaca ilosc miejsca w garazu ");
+
+        }else{
 
             System.out.println(" mozna wlozyc obiekt do garazu ");
         }

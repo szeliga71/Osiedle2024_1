@@ -223,39 +223,45 @@ public class Environment {
                 case "13" -> unRentRoom(chooseUserRoom(Garage.class, user), user);
                 case "14" -> show(itemsInGarage(chooseUserRoom(Garage.class, user)));
                 case "15" -> {
-                    Garage garage = chooseUserRoom(Garage.class, user);
-                    if (garage == null) {
-                        System.out.println(" nie mozna dokonac tej operacji !");
-                        break;
-                    } else {
-                        itemTemp = chooseItem(items);
-                        System.out.println("  item DO DODANIA " + itemTemp);
-                    }
-                    if (itemTemp != null) {
-                        items.remove(itemTemp);
-                        try {
-                            garage.addItemsToGarage(itemTemp);
-                        } catch (TooManyThingsException e) {
-                            System.out.println(e.getMessage());
+
+
+                    Optional<Garage> garage = chooseUserOptionalRoom(Garage.class, user);
+                    // Garage garage1 = chooseUserRoom(Garage.class, user);
+                    //if (garage == null) {
+                    //  System.out.println(" nie mozna dokonac tej operacji !");
+                    //break;
+                    //} else {
+                    if (garage.isPresent()) {
+                        Optional<Item> itemTemp1 = chooseOptionalItem(items);
+                        if (itemTemp1.isPresent()) {
+                            System.out.println("  item DO DODANIA " + itemTemp1.get());
+                            items.remove(itemTemp1.get());
+                            try {
+                                garage.get().addItemsToGarage(itemTemp1.get());
+                            } catch (TooManyThingsException e) {
+                                System.out.println(e.getMessage());
+                            }
+
+                            //try {
+                            //  garage.addItemsToGarage(itemTemp);
+                            //} catch (TooManyThingsException e) {
+                            //  System.out.println(e.getMessage());
+                            //}
+                            //   }
+                            // }
                         }
                     }
                 }
                 case "16" -> {
 
-                    Garage garage = chooseUserRoom(Garage.class, user);
-                    if (garage == null) {
-                        System.out.println(" nie mozna dokonac tej operacji !");
-                        break;
-                    } else {
-                        itemTemp = chooseItem(garage.getItemsInGarage());
+                    Optional<Garage> garage = chooseUserOptionalRoom(Garage.class, user);
+                    if(garage.isPresent()){
+                        Optional<Item>itemTempOp = chooseOptionalItem(garage.get().getItemsInGarage());
 
-                    }
-                    if (itemTemp != null) {
+                        items.add(itemTempOp.get());
 
-                        items.add(itemTemp);
-
-                        garage.getItemsInGarage().remove(itemTemp);
-                        System.out.println("  Przedmiot  " + itemTemp + "  USUNIETY ");
+                        garage.get().getItemsInGarage().remove(itemTempOp.get());
+                        System.out.println("  Przedmiot  " + itemTempOp.get() + "  USUNIETY ");
                     }
                 }
 
@@ -690,6 +696,65 @@ public class Environment {
         }
         return item;
     }
+    //===================================================================
+public Optional<Item> chooseOptionalItem(Set<Item> itemsSSet) {
+   // public <T extends Room> Optional<T> chooseUserOptionalRoom(Class<T> propertyClass, Person user) {
+
+        List<Item> items = allItems(itemsSSet);
+                //roomsOfUser(propertyClass, user);
+
+        if (items.isEmpty()) {
+            System.out.println(" nie ma juz zadnych przedmiotow !");
+            return Optional.empty();
+        } else {
+            System.out.println(" Prosze podac numer pod ktorym znajduje sie przedmiot ,ktory chcesz wybrac  : " + '\n');
+
+            show(items);
+
+            System.out.println(" numer  :");
+            int position;
+            try {
+                position = (Integer.parseInt(choose(scan))) - 1;
+
+            } catch (NumberFormatException e) {
+                System.out.println(" wprowadzono nieprawidlowa liczbe , sprobuj ponownie !");
+                return Optional.empty();
+            }
+            if ((position < 0) || (position >= items.size())) {
+
+                return Optional.empty();
+
+
+            } else {
+                return Optional.of(items.get(position));
+            }
+        }
+    }
+
+    /*
+        System.out.println(" Prosze podac numer pod ktorym znajduje sie obiekt ktory chcesz wybrac  : " + '\n');
+        show(allItems(items));
+        System.out.println();
+        String position = choose(scan);
+        int index = (Integer.parseInt(position)) - 1;
+        UUID id = allItems(items).get(index).getId();
+
+        return getOptionalItem(id, items);
+        }*/
+
+public Optional<Item> getOptionalItem(UUID itemId, Set<Item> itemsSet) {
+
+        Optional<Item> item = null;
+
+        for (Item it : itemsSet) {
+        if (itemId.equals(it.getId())) {
+        item = Optional.ofNullable(it);
+        }
+        }
+        return item;
+        }
+
+//======================================================================
 
     public boolean fiveRoomRentLimitation(Person user) {
 
