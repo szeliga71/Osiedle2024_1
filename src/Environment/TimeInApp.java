@@ -8,7 +8,7 @@ import EstateObjects.Room;
 
 import java.time.LocalDate;
 import java.util.Map;
-
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -40,25 +40,24 @@ public abstract class TimeInApp extends RoomService{
 
     public void timeRun() {
 
-
-        //pula watkow 3 watki
-        //ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
-
-        //watek 1 - symulacja czasu
-
         Runnable timeSimulation = () -> {
             currentDate[0] = currentDate[0].plusDays(1);
 
-            // to pokazuje aktualny czas w konsoli
-           //System.out.println(currentDate[0]);
         };
 
-        // watek 2 - sprawdzanie daty konca wynajmu
-        Runnable check1 = this::checkEndRent;
 
-        //watek 3   sprawdzenie jesli wynajem nie odnowiony czyszczenie pomieszczenia  file w aktach
-        //System.out.println(" czy weszlo do check 2 ");
-        Runnable check2 = this::checkLastEndRent;
+        Runnable check1 = () -> {
+            checkEndRent();
+
+        };
+
+
+        Runnable check2 = () -> {
+
+            checkLastEndRent();
+
+
+        };
 
 
         scheduledExecutorService.scheduleAtFixedRate(timeSimulation, 0, 5, TimeUnit.SECONDS);
@@ -69,11 +68,11 @@ public abstract class TimeInApp extends RoomService{
 
     public void checkEndRent() {
 
-        for (Map.Entry<UUID, String> entry : en.getEstate().entrySet()) {
+       for (Map.Entry<UUID, String> entry : getEstate().entrySet()) {
             if (entry.getValue() != null) {
 
 
-                for (Room room : en.getRoomSet()) {
+                for (Room room : getRoomSet()) {
 
                     if (room.getId().equals(entry.getKey())) {
 
@@ -96,29 +95,27 @@ public abstract class TimeInApp extends RoomService{
 
     public void checkLastEndRent() {
 
-        for (Map.Entry<UUID, String> entry : en.getEstate().entrySet()) {
+       for (Map.Entry<UUID, String> entry : getEstate().entrySet()) {
             if (entry.getValue() != null) {
 
-                for (Room room : en.getRoomSet()) {
+                for (Room room : getRoomSet()) {
                     if (room.getId().equals(entry.getKey())) {
                         if ((currentDate[0].isAfter(room.getEndRent()[0])) && (room.getStartRent() == null)) {
 
-                            //ustawienie konca wynajmu
                             room.setEndRent(null);
 
                             room.setPrimaryTenantID(null);
 
                             if (room instanceof Garage garageLocal) {
-                                garageLocal.clearGarage(en.getItems());
-                                garageLocal.addItemFromGarageToGlobal(en.getItems());
+                                garageLocal.clearGarage(getItems());
+                                garageLocal.addItemFromGarageToGlobal(getItems());
 
                             }
                             if (room instanceof Apartment) {
                                 ((Apartment) room).getPersonsInApartment().clear();
                             }
 
-                            //ustawienie w mapie ze nieruchomosc wolna
-                            en.getEstate().put(room.getId(), null);
+                            getEstate().put(room.getId(), null);
                         }
                     }
                 }

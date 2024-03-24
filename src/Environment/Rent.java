@@ -31,9 +31,10 @@ public abstract class Rent extends TimeInApp {
                     if (rentDays <= 0) {
                         System.out.println(" liczba dni musi byc wieksza niz zero ! Sprobuj ponownie.");
                     } else {
+                        entry.setValue(user.getPesel());
                         if (room instanceof Apartment apartment) {
                             apartment.setEndRent(new LocalDate[]{getCurrentDate()[0].plusDays(rentDays)});
-                            entry.setValue(user.getPesel());
+
                             apartment.setPrimaryTenantID(user.getPesel());
                             apartment.addPersonToApartment(user);
                             apartment.setStartRent(new LocalDate[]{getCurrentDate()[0]});
@@ -41,7 +42,7 @@ public abstract class Rent extends TimeInApp {
                             System.out.println(user + " wynaja  " + room);
                         } else if (room instanceof Garage garage) {
                             garage.setEndRent(new LocalDate[]{LocalDate.now().plusDays(rentDays)});
-                            entry.setValue(user.getPesel());
+
                             garage.setPrimaryTenantID(user.getPesel());
                             garage.setStartRent(new LocalDate[]{LocalDate.now()});
                             System.out.println();
