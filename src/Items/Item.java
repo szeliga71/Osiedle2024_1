@@ -1,11 +1,5 @@
 package Items;
 
-import Environment.Environment;
-import Environment.Util;
-import EstateObjects.Garage;
-import EstateObjects.Room;
-import People.Person;
-
 import java.util.*;
 
 public abstract class Item   {

@@ -29,7 +29,7 @@ public abstract class Util {
         this.scan = new Scanner(System.in);
     }
 
-    public Person getPerson(String pesel, Set<Person> personsSet) {
+    public Person getPerson(String pesel) {
 
         Person user = null;
         for (Person person : getPersonsSet()) {
@@ -72,7 +72,7 @@ public abstract class Util {
         show(allPersons(personsSet));
         System.out.println();
         String pesel = choose(scan);
-        return getPerson(pesel, personsSet);
+        return getPerson(pesel);
     }
 
     public String choose(Scanner scan) {
@@ -95,7 +95,7 @@ public abstract class Util {
         String pesel = choose(scan);
         for (Person p : personsSet) {
             if (p.getPesel().equals(pesel)) {
-                person = Optional.ofNullable(p);
+                person = Optional.of(p);
             }
         }
         return person;

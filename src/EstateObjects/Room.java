@@ -1,8 +1,5 @@
 package EstateObjects;
-import Environment.ExtendRent;
-import Environment.Environment;
-import Environment.AddRemoveItem;
-import People.Person;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -10,14 +7,12 @@ import java.util.*;
 public abstract class Room  {
 
 
-    Environment env;
 
-    // Scanner scan=new Scanner(System.in);
     private final UUID id;
     private long area;
     private LocalDate[] startRent;
     private LocalDate[] endRent;
-    //private Person primaryTenant;
+
     private String primaryTenantID;
 
     public Room() {

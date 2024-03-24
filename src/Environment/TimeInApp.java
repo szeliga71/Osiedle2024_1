@@ -4,11 +4,11 @@ package Environment;
 import EstateObjects.Apartment;
 import EstateObjects.Garage;
 import EstateObjects.Room;
-import People.Person;
+
 
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Set;
+
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,19 +54,11 @@ public abstract class TimeInApp extends RoomService{
         };
 
         // watek 2 - sprawdzanie daty konca wynajmu
-        Runnable check1 = () -> {
-            checkEndRent();
-
-        };
+        Runnable check1 = this::checkEndRent;
 
         //watek 3   sprawdzenie jesli wynajem nie odnowiony czyszczenie pomieszczenia  file w aktach
-        Runnable check2 = () -> {
-
-
-            checkLastEndRent();
-            //System.out.println(" czy weszlo do check 2 ");
-
-        };
+        //System.out.println(" czy weszlo do check 2 ");
+        Runnable check2 = this::checkLastEndRent;
 
 
         scheduledExecutorService.scheduleAtFixedRate(timeSimulation, 0, 5, TimeUnit.SECONDS);
@@ -91,7 +83,7 @@ public abstract class TimeInApp extends RoomService{
 
                             room.getEndRent()[0] = room.getEndRent()[0].plusDays(30);
 
-                            getPerson(room.getPrimaryTenantID(),en.getPersonsSet()).getFiles().add(new File(room.getId(), room.getEndRent()[0]));
+                            getPerson(room.getPrimaryTenantID()).getFiles().add(new File(room.getId(), room.getEndRent()[0]));
 
                         }
                     }
@@ -116,8 +108,7 @@ public abstract class TimeInApp extends RoomService{
 
                             room.setPrimaryTenantID(null);
 
-                            if (room instanceof Garage) {
-                                Garage garageLocal= (Garage) room;
+                            if (room instanceof Garage garageLocal) {
                                 garageLocal.clearGarage(en.getItems());
                                 garageLocal.addItemFromGarageToGlobal(en.getItems());
 

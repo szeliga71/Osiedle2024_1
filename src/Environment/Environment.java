@@ -42,8 +42,8 @@ public class Environment extends AddRemoveItem{
 
         while (true) {
 
-            Apartment apartment=null;
-            Garage garage=null;
+            Apartment apartment;
+            Garage garage;
 
 
             String number;
@@ -255,9 +255,6 @@ public class Environment extends AddRemoveItem{
 
     }
 
-    public String sanitizeFilename(String name) {
-        return name.replaceAll("[^a-zA-Z0-9\\._]+", "_");
-    }
 
     public void writePersonSetToFile() {
         try

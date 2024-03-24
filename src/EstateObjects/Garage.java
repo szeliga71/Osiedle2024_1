@@ -1,8 +1,7 @@
 package EstateObjects;
 
-import Environment.TooManyThingsException;
 import Items.Item;
-import People.Person;
+
 
 import java.util.*;
 
@@ -25,24 +24,8 @@ public class Garage extends Room{
         return itemsInGarage;
     }
 
-
-    /*public void addItemsToGarage(Item item) throws TooManyThingsException {
-
-        if(item.getSize()+volume>this.getArea()){
-    throw new TooManyThingsException(" Niewystarczajaca ilosc miejsca w garazu ");
-
-        }else{
-
-            System.out.println(" mozna wlozyc obiekt do garazu ");
-        }
-        itemsInGarage.add(item);
-        setVolume(item.getSize()+volume);}
-
-
-*/
     public void clearGarage(Set<Item>itemSet){
         addItemFromGarageToGlobal(itemSet);
-        //items.addAll(this.getItemsInGarage());
         itemsInGarage.clear();
     }
     public void addItemFromGarageToGlobal(Set<Item>itemSet){
