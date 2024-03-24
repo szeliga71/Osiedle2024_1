@@ -9,10 +9,9 @@ import Items.Item;
 import People.Person;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
+import java.io.File;
 import java.util.*;
 
 public class Environment extends AddRemoveItem{
@@ -233,6 +232,28 @@ public class Environment extends AddRemoveItem{
             e.printStackTrace();
         }
 
+    }
+
+    public void writeFromFileToMap() throws FileNotFoundException {
+
+        String pathToFile="map.txt";
+        try {
+            Scanner scanFile = new Scanner(new File(pathToFile));
+
+            while(scanFile.hasNextLine()){
+
+                String line=scanFile.nextLine();
+
+                String[]parts=line.split("=");
+                if(parts.length==2){
+                    UUID key=UUID.fromString(parts[0]);
+                    estate.put(key,parts[1]);
+                }
+            }
+        }catch(FileNotFoundException e){
+            System.out.println(" nie znaleziono pliku pod ta sciezka "+pathToFile);
+            e.printStackTrace();
+        }
     }
 
     public <T> void writeSetToFile(Set<T> set) {
