@@ -2,11 +2,13 @@ package EstateObjects;
 
 import Environment.TooManyThingsException;
 import Items.Item;
+import People.Person;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Garage extends Room{
+
+    protected Item item;
 
    private Set<Item> itemsInGarage;
    private long volume;
@@ -17,12 +19,14 @@ public class Garage extends Room{
         volume=0;
     }
 
+
+
     public Set<Item> getItemsInGarage() {
         return itemsInGarage;
     }
 
 
-    public void addItemsToGarage(Item item) throws TooManyThingsException{
+    /*public void addItemsToGarage(Item item) throws TooManyThingsException {
 
         if(item.getSize()+volume>this.getArea()){
     throw new TooManyThingsException(" Niewystarczajaca ilosc miejsca w garazu ");
@@ -35,10 +39,15 @@ public class Garage extends Room{
         setVolume(item.getSize()+volume);}
 
 
-
-    public void clearGarage(Set<Item> items){
-        items.addAll(this.getItemsInGarage());
+*/
+    public void clearGarage(Set<Item>itemSet){
+        addItemFromGarageToGlobal(itemSet);
+        //items.addAll(this.getItemsInGarage());
         itemsInGarage.clear();
+    }
+    public void addItemFromGarageToGlobal(Set<Item>itemSet){
+        itemSet.addAll(this.getItemsInGarage());
+
     }
 
     @Override

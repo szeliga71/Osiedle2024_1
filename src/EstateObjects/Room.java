@@ -1,13 +1,18 @@
 package EstateObjects;
+import Environment.ExtendRent;
+import Environment.Environment;
+import Environment.AddRemoveItem;
+import People.Person;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
-public abstract class Room {
-
+public abstract class Room  {
 
 
+    Environment env;
+
+    // Scanner scan=new Scanner(System.in);
     private final UUID id;
     private long area;
     private LocalDate[] startRent;
@@ -15,10 +20,11 @@ public abstract class Room {
     //private Person primaryTenant;
     private String primaryTenantID;
 
-    public Room(){
-        id=UUID.randomUUID();
+    public Room() {
+        id = UUID.randomUUID();
 
     }
+
     public void setArea(long area) {
         this.area = area;
     }
@@ -58,7 +64,7 @@ public abstract class Room {
 
     @Override
     public String toString() {
-        return " nr "+ id +
+        return " nr " + id +
                 "  area " + area +
                 "  startRent " + Arrays.toString(startRent) +
                 "  endRent " + Arrays.toString(endRent) +
@@ -80,4 +86,5 @@ public abstract class Room {
         result = 31 * result + (int) (getArea() ^ (getArea() >>> 32));
         return result;
     }
+
 }

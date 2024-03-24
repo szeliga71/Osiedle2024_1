@@ -3,8 +3,7 @@ package EstateObjects;
 import People.Person;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Apartment extends Room{
 
@@ -13,6 +12,9 @@ public class Apartment extends Room{
     public Apartment(long area){
         super.setArea(area);
         personsInApartment=new HashSet<>();
+    }
+
+    public Apartment() {
     }
 
     public void addPersonToApartment(Person person) {
@@ -40,4 +42,5 @@ public class Apartment extends Room{
     public Set<Person> getPersonsInApartment() {
         return personsInApartment;
     }
+
 }

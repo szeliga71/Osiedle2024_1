@@ -1,8 +1,16 @@
 package Items;
 
-import java.util.UUID;
+import Environment.Environment;
+import Environment.Util;
+import EstateObjects.Garage;
+import EstateObjects.Room;
+import People.Person;
 
-public abstract class Item {
+import java.util.*;
+
+public abstract class Item   {
+
+
 
     private final UUID id;
 
@@ -44,5 +52,6 @@ public abstract class Item {
         return  ""+ size;
 
     }
+
 }
 

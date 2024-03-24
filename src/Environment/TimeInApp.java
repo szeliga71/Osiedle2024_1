@@ -1,22 +1,30 @@
 package Environment;
 
 
+import EstateObjects.Apartment;
+import EstateObjects.Garage;
+import EstateObjects.Room;
+import People.Person;
+
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class TimeInApp {
+public abstract class TimeInApp extends RoomService{
 
     public Environment en;
 
-    ScheduledExecutorService scheduledExecutorService;// = Executors.newScheduledThreadPool(3);
+
+    ScheduledExecutorService scheduledExecutorService;
 
     final LocalDate[] currentDate = {LocalDate.now()};
 
 
-    public TimeInApp(Environment en) {
-        this.en = en;
+    public TimeInApp() {
         scheduledExecutorService=Executors.newScheduledThreadPool(3);
     }
 
@@ -30,7 +38,7 @@ public class TimeInApp {
 
     }
 
-    public void timeRun(Environment en) {
+    public void timeRun() {
 
 
         //pula watkow 3 watki
@@ -47,7 +55,7 @@ public class TimeInApp {
 
         // watek 2 - sprawdzanie daty konca wynajmu
         Runnable check1 = () -> {
-            en.checkEndRent();
+            checkEndRent();
 
         };
 
@@ -55,7 +63,7 @@ public class TimeInApp {
         Runnable check2 = () -> {
 
 
-            en.checkLastEndRent();
+            checkLastEndRent();
             //System.out.println(" czy weszlo do check 2 ");
 
         };
@@ -65,5 +73,68 @@ public class TimeInApp {
         scheduledExecutorService.scheduleAtFixedRate(check1, 0, 10, TimeUnit.SECONDS);
         scheduledExecutorService.scheduleAtFixedRate(check2, 0, 10, TimeUnit.SECONDS);
         }
+
+
+    public void checkEndRent() {
+
+        for (Map.Entry<UUID, String> entry : en.getEstate().entrySet()) {
+            if (entry.getValue() != null) {
+
+
+                for (Room room : en.getRoomSet()) {
+
+                    if (room.getId().equals(entry.getKey())) {
+
+                        if ((currentDate[0].isAfter(room.getEndRent()[0])) && (room.getStartRent() != null)) {
+
+                            room.setStartRent(null);
+
+                            room.getEndRent()[0] = room.getEndRent()[0].plusDays(30);
+
+                            getPerson(room.getPrimaryTenantID(),en.getPersonsSet()).getFiles().add(new File(room.getId(), room.getEndRent()[0]));
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    public void checkLastEndRent() {
+
+        for (Map.Entry<UUID, String> entry : en.getEstate().entrySet()) {
+            if (entry.getValue() != null) {
+
+                for (Room room : en.getRoomSet()) {
+                    if (room.getId().equals(entry.getKey())) {
+                        if ((currentDate[0].isAfter(room.getEndRent()[0])) && (room.getStartRent() == null)) {
+
+                            //ustawienie konca wynajmu
+                            room.setEndRent(null);
+
+                            room.setPrimaryTenantID(null);
+
+                            if (room instanceof Garage) {
+                                Garage garageLocal= (Garage) room;
+                                garageLocal.clearGarage(en.getItems());
+                                garageLocal.addItemFromGarageToGlobal(en.getItems());
+
+                            }
+                            if (room instanceof Apartment) {
+                                ((Apartment) room).getPersonsInApartment().clear();
+                            }
+
+                            //ustawienie w mapie ze nieruchomosc wolna
+                            en.getEstate().put(room.getId(), null);
+                        }
+                    }
+                }
+            }
+
+
+        }
+    }
     }
 

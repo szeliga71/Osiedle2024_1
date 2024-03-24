@@ -2,8 +2,8 @@ package People;
 
 import Environment.File;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 public class Person {
 
@@ -14,13 +14,15 @@ public class Person {
     private Nation nationality;
     private List<File> files;
 
-    public Person(String pesel,String firstName,String lastName,Nation nationality){
-        this.pesel=pesel;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.nationality=nationality;
 
-        files=new ArrayList<>();
+    public Person(String pesel, String firstName, String lastName, Nation nationality) {
+        this.pesel = pesel;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nationality = nationality;
+
+        files = new ArrayList<>();
+
     }
 
     public String getPesel() {
@@ -45,7 +47,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "PESEL : "+pesel + "  , imie    "+firstName +", nazwisko    "+ lastName +", narodowosc    "+ nationality+" "+ getFiles().size()+" "+getFiles()+".";
+        return "PESEL : " + pesel + "  , imie    " + firstName + ", nazwisko    " + lastName + ", narodowosc    " + nationality + " " + getFiles().size() + " " + getFiles() + ".";
 
     }
 
@@ -68,4 +70,5 @@ public class Person {
         result = 31 * result + getNationality().hashCode();
         return result;
     }
+
 }
