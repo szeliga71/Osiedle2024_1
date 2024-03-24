@@ -8,7 +8,7 @@ import EstateObjects.Room;
 
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Set;
+
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class TimeInApp extends RoomService{
 
-    public Environment en;
 
 
     ScheduledExecutorService scheduledExecutorService;
@@ -58,7 +57,6 @@ public abstract class TimeInApp extends RoomService{
 
 
         };
-
 
         scheduledExecutorService.scheduleAtFixedRate(timeSimulation, 0, 5, TimeUnit.SECONDS);
         scheduledExecutorService.scheduleAtFixedRate(check1, 0, 10, TimeUnit.SECONDS);
